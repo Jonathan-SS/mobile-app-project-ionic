@@ -1,0 +1,20 @@
+.category-item {
+  min-width: 45%;
+  width: 45%;
+  height: 75px;
+  display: flex;
+  padding-block: 16px;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: #000;
+  margin: 8px;
+}
+
+.category-image {
+  width: 30%;
+}
+
+.category-content {
+  color: #000;
+}

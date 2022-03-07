@@ -74,3 +74,94 @@ export default function App() {
     </IonApp>
   );
 }
+
+/*
+function PrivateRoutes() {
+  return (
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/add-products">
+              <AddProducts />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="Home" href="/home">
+              <IonIcon icon={homeOutline} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab2" href="/tab2">
+              <IonIcon icon={addCircleOutline} />
+              <IonLabel>Add product</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="tab3" href="/tab3">
+              <IonIcon icon={personOutline} />
+              <IonLabel>profile</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
+  );
+}
+
+function PublicRoutes() {
+  return (
+    <IonRouterOutlet>
+      <Route exact path="/signin">
+        <SignInPage />
+      </Route>
+      <Route exact path="/signup">
+        <SignUpPage />
+      </Route>
+    </IonRouterOutlet>
+  );
+}
+
+export default function App() {
+  const [userIsAuthenticated, setUserIsAuthenticated] = useState(
+    localStorage.getItem("userIsAuthenticated")
+  );
+  const auth = getAuth();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log(user);
+        // User is authenticated
+        setUserIsAuthenticated(true);
+        localStorage.setItem("userIsAuthenticated", true);
+      } else {
+        // User is signed out
+        setUserIsAuthenticated(false);
+        localStorage.removeItem("userIsAuthenticated", false);
+      }
+    });
+  }, [auth]);
+
+  return (
+    <IonApp>
+      <IonReactRouter>
+        {userIsAuthenticated ? <PrivateRoutes /> : <PublicRoutes />}
+        <Route>
+          {userIsAuthenticated ? (
+            <Redirect to="/posts" />
+          ) : (
+            <Redirect to="/signin" />
+          )}
+        </Route>
+      </IonReactRouter>
+    </IonApp>
+  );
+}
+*/

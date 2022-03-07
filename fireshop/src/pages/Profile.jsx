@@ -5,7 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./Tab3.css";
+import "./Profile.css";
 
 export default function Profile() {
   return (
