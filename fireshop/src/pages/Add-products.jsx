@@ -5,7 +5,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import "./Add-products.css";
+import "../styles//Add-products.css";
 
 export default function AddProducts() {
   return (

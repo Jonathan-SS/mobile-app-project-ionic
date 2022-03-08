@@ -12,7 +12,7 @@ import {
   IonListHeader,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
-import "./Home.css";
+import "../styles/Home.css";
 import Searchbar from "../components/SearchBar";
 import ProductItem from "../components/ProductListItem";
 import CategoryItem from "../components/ProductCategoryItem";
@@ -64,7 +64,6 @@ export default function Home() {
       setSearchbarVis(false);
     }
   }
-
   return (
     <IonPage>
       <IonContent fullscreen>

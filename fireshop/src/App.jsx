@@ -13,7 +13,7 @@ import { IonReactRouter } from "@ionic/react-router";
 import { addCircleOutline, homeOutline, personOutline } from "ionicons/icons";
 import Home from "./pages/Home";
 import AddProducts from "./pages/Add-products";
-import Profile from "./pages/Profile";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 /* Core CSS required for Ionic components to work properly */
 import "@ionic/react/css/core.css";
@@ -33,9 +33,13 @@ import "@ionic/react/css/display.css";
 
 /* Theme variables */
 import "./theme/variables.css";
+import { useEffect, useState } from "react";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import ProfilePage from "./pages/ProfilePage";
 
 setupIonicReact();
-
+/*
 export default function App() {
   return (
     <IonApp>
@@ -73,9 +77,8 @@ export default function App() {
       </IonReactRouter>
     </IonApp>
   );
-}
+} */
 
-/*
 function PrivateRoutes() {
   return (
     <IonApp>
@@ -89,7 +92,7 @@ function PrivateRoutes() {
               <AddProducts />
             </Route>
             <Route path="/profile">
-              <Profile />
+              <ProfilePage />
             </Route>
             <Route exact path="/">
               <Redirect to="/home" />
@@ -100,11 +103,11 @@ function PrivateRoutes() {
               <IonIcon icon={homeOutline} />
               <IonLabel>Home</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tab2" href="/tab2">
+            <IonTabButton tab="AddProducts" href="/add-product">
               <IonIcon icon={addCircleOutline} />
               <IonLabel>Add product</IonLabel>
             </IonTabButton>
-            <IonTabButton tab="tab3" href="/tab3">
+            <IonTabButton tab="ProfilePage" href="/profile">
               <IonIcon icon={personOutline} />
               <IonLabel>profile</IonLabel>
             </IonTabButton>
@@ -155,7 +158,7 @@ export default function App() {
         {userIsAuthenticated ? <PrivateRoutes /> : <PublicRoutes />}
         <Route>
           {userIsAuthenticated ? (
-            <Redirect to="/posts" />
+            <Redirect to="/home" />
           ) : (
             <Redirect to="/signin" />
           )}
@@ -164,4 +167,3 @@ export default function App() {
     </IonApp>
   );
 }
-*/
