@@ -12,7 +12,7 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import { addCircleOutline, homeOutline, personOutline } from "ionicons/icons";
 import Home from "./pages/Home";
-import AddProducts from "./pages/Add-products";
+import AddProduct from "./pages/Add-product";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 /* Core CSS required for Ionic components to work properly */
@@ -88,8 +88,8 @@ function PrivateRoutes() {
             <Route exact path="/home">
               <Home />
             </Route>
-            <Route exact path="/add-products">
-              <AddProducts />
+            <Route exact path="/add-product">
+              <AddProduct />
             </Route>
             <Route path="/profile">
               <ProfilePage />

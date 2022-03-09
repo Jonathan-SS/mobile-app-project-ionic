@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { camera } from "ionicons/icons";
 
-export default function PostForm({ product, handleSubmit }) {
+export default function ProductForm({ product, handleSubmit }) {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
@@ -47,6 +47,9 @@ export default function PostForm({ product, handleSubmit }) {
   }
   return (
     <form onSubmit={submitEvent}>
+      {image && (
+        <IonImg className="ion-padding" src={image} onClick={takePicture} />
+      )}
       <IonItem>
         <IonLabel position="stacked">Title</IonLabel>
         <IonInput
@@ -69,9 +72,6 @@ export default function PostForm({ product, handleSubmit }) {
           <IonIcon slot="icon-only" icon={camera} />
         </IonButton>
       </IonItem>
-      {image && (
-        <IonImg className="ion-padding" src={image} onClick={takePicture} />
-      )}
 
       <div className="ion-padding">
         <IonButton type="submit" expand="block">

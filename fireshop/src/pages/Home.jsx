@@ -10,6 +10,7 @@ import {
   IonButtons,
   IonList,
   IonListHeader,
+  IonModal,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "../styles/Home.css";
@@ -26,34 +27,42 @@ export default function Home() {
     {
       image: "../../assets/kategori-icons/bil.svg",
       category: "Biler",
+      key: 1,
     },
     {
       image: "../../assets/kategori-icons/boeger.svg",
       category: "Bøger",
+      key: 2,
     },
     {
       image: "../../assets/kategori-icons/cykler.svg",
       category: "Cykler",
+      key: 3,
     },
     {
       image: "../../assets/kategori-icons/dyr.svg",
       category: "Dyr",
+      key: 4,
     },
     {
       image: "../../assets/kategori-icons/elektronik.svg",
       category: "Elektronik",
+      key: 5,
     },
     {
       image: "../../assets/kategori-icons/hus.svg",
       category: "Hus",
+      key: 6,
     },
     {
       image: "../../assets/kategori-icons/sport.svg",
       category: "Sport",
+      key: 7,
     },
     {
       image: "../../assets/kategori-icons/toej.svg",
       category: "Tøj",
+      key: 8,
     },
   ];
 
@@ -107,7 +116,7 @@ export default function Home() {
         <IonListHeader>Products near you</IonListHeader>
         <IonList className="categoryList">
           {categories.map((category) => (
-            <CategoryItem item={category} />
+            <CategoryItem key={category.key} item={category} />
           ))}
         </IonList>
       </IonContent>

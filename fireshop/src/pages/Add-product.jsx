@@ -6,21 +6,18 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import "../styles//Add-products.css";
+import ProductForm from "../components/productForm";
 
-export default function AddProducts() {
+export default function AddProduct() {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 2</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Tab 2</IonTitle>
+            <IonTitle size="large">Add product</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <ProductForm />
       </IonContent>
     </IonPage>
   );
