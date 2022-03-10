@@ -6,22 +6,45 @@ import {
   IonToolbar,
   IonIcon,
   IonButton,
-  IonBackButton,
   IonButtons,
   IonList,
   IonListHeader,
   IonModal,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
-import "../styles/Home.css";
+import "./styles/Home.css";
 import Searchbar from "../components/SearchBar";
-import ProductItem from "../components/ProductListItem";
+import ProductListItem from "../components/ProductListItem";
 import CategoryItem from "../components/ProductCategoryItem";
-
+import { Geolocation } from "@capacitor/geolocation";
 import { useState } from "react";
+import { productsRef } from "../firebase-config";
+import { get } from "firebase/database";
+const geofire = require("geofire-common");
 
 export default function Home() {
-  const [searchbarVis, setSearchbarVis] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  /*
+  async function closestTooMe() {
+    Geolocation.requestPermissions();
+    const coordinates = await Geolocation.getCurrentPosition().coords;
+    const center = [coordinates.latitude, coordinates.longitude];
+
+    const radiusInM = 5000;
+    const bounds = geofire.geohashQueryBounds(center, radiusInM);
+    const promises = [];
+    let data = await get(productsRef).val;
+    const keyedProducts = Object.keys(data).map((key) => ({
+      id: key,
+      ...data[key],
+    }));
+
+    for (const b of bounds) {
+      const q = keyedProducts.orderBy();
+    }
+  }
+*/
+  const pageEl = document.querySelector(".ion-page");
 
   const categories = [
     {
@@ -66,54 +89,54 @@ export default function Home() {
     },
   ];
 
-  function searchbarShow() {
-    if (!searchbarVis) {
-      setSearchbarVis(true);
-    } else {
-      setSearchbarVis(false);
-    }
-  }
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          {searchbarVis ? (
-            <>
-              <IonButtons>
-                <IonBackButton
-                  onClick={searchbarShow}
-                  color="dark"
-                  text="Back"
-                  defaultHref="home"
-                />
-              </IonButtons>
-              <Searchbar />
-            </>
-          ) : (
+        <IonModal
+          isOpen={showModal}
+          cssClass="my-custom-class"
+          presentingElement={pageEl}
+          swipeToClose={true}
+          onDidDismiss={() => setShowModal(false)}
+        >
+          <IonHeader translucent>
             <IonToolbar>
-              <IonTitle size="large">Home</IonTitle>
-              <IonButton onClick={searchbarShow} color="none" slot="end">
-                <IonIcon
-                  color="dark"
-                  slot="icon-only"
-                  size="large"
-                  icon={searchOutline}
-                />
-              </IonButton>
+              <IonTitle>search products</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onclick={() => setShowModal(false)}>Close</IonButton>
+              </IonButtons>
             </IonToolbar>
-          )}
+          </IonHeader>
+          <Searchbar />
+        </IonModal>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonTitle size="large">Home</IonTitle>
+            <IonButton
+              onClick={() => setShowModal(true)}
+              color="none"
+              slot="end"
+            >
+              <IonIcon
+                color="dark"
+                slot="icon-only"
+                size="large"
+                icon={searchOutline}
+              />
+            </IonButton>
+          </IonToolbar>
         </IonHeader>
 
         <IonListHeader>Products near you</IonListHeader>
         <IonList className="product-list">
-          <ProductItem />
-          <ProductItem />
-          <ProductItem />
-          <ProductItem />
-          <ProductItem />
-          <ProductItem />
+          <ProductListItem />
+          <ProductListItem />
+          <ProductListItem />
+          <ProductListItem />
+          <ProductListItem />
+          <ProductListItem />
         </IonList>
-        <IonListHeader>Products near you</IonListHeader>
+        <IonListHeader>Categories</IonListHeader>
         <IonList className="categoryList">
           {categories.map((category) => (
             <CategoryItem key={category.key} item={category} />

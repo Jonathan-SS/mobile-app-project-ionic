@@ -1,5 +1,6 @@
 import { IonImg, IonCard, IonCardContent } from "@ionic/react";
-import "./styles/ProductListItem.css"; /*
+
+import "./styles/ProductItem.css"; /*
 import { useHistory } from "react-router-dom";
 import { Toast } from "@capacitor/toast";
 import PostUpdateModal from "./PostUpdateModal";
@@ -8,17 +9,17 @@ import { getPostRef, storage } from "../firebase-config";
 import { ref, deleteObject } from "@firebase/storage";
 import { getAuth } from "firebase/auth";*/
 
-export default function ProductListItem() {
+export default function ProductItem({ product }) {
   return (
     <>
-      <IonCard className="product-item ">
-        <div className="img-gradient">
-          <IonImg
-            className="product-image"
-            src="https://em-epi-static.azureedge.net/altdk-cache/b/5/d/5/0/8/b5d5089c982ff744f5908a44a42d1f60364fe870.jpg"
-          />
+      <IonCard className="product-itemSearch">
+        <div className="img-gradientSearch">
+          <IonImg className="product-imageSearch" src={product.image} />
         </div>
-        <IonCardContent className="item-content">Brugt bil</IonCardContent>
+        <IonCardContent className="item-contentSearch">
+          <h2>{product.title}</h2>
+          <h3>Pris: {product.price}</h3>
+        </IonCardContent>
       </IonCard>
     </>
   );

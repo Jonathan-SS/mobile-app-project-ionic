@@ -32,12 +32,12 @@ export const auth = initializeAuth(app, {
 // Create database reference
 export const database = getDatabase(app);
 // Reference to posts in Realtime DB
-export const postsRef = ref(database, "posts");
+export const productsRef = ref(database, "products");
 // Reference to users in Realtime DB
 export const usersRef = ref(database, "users");
 // Get reference to specific post using post id
-export function getPostRef(postId) {
-  return ref(database, "posts/" + postId);
+export function getProdutcsRef(productId) {
+  return ref(database, "products/" + productId);
 }
 // Get reference to specific user using user id
 export function getUserRef(userId) {

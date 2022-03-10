@@ -81,40 +81,36 @@ export default function App() {
 
 function PrivateRoutes() {
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/home">
-              <Home />
-            </Route>
-            <Route exact path="/add-product">
-              <AddProduct />
-            </Route>
-            <Route path="/profile">
-              <ProfilePage />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="Home" href="/home">
-              <IonIcon icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="AddProducts" href="/add-product">
-              <IonIcon icon={addCircleOutline} />
-              <IonLabel>Add product</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="ProfilePage" href="/profile">
-              <IonIcon icon={personOutline} />
-              <IonLabel>profile</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
+    <IonTabs>
+      <IonRouterOutlet>
+        <Route exact path="/home">
+          <Home />
+        </Route>
+        <Route exact path="/add-product">
+          <AddProduct />
+        </Route>
+        <Route path="/profile">
+          <ProfilePage />
+        </Route>
+        <Route exact path="/">
+          <Redirect to="/home" />
+        </Route>
+      </IonRouterOutlet>
+      <IonTabBar slot="bottom">
+        <IonTabButton tab="Home" href="/home">
+          <IonIcon icon={homeOutline} />
+          <IonLabel>Home</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="AddProducts" href="/add-product">
+          <IonIcon icon={addCircleOutline} />
+          <IonLabel>Add product</IonLabel>
+        </IonTabButton>
+        <IonTabButton tab="ProfilePage" href="/profile">
+          <IonIcon icon={personOutline} />
+          <IonLabel>profile</IonLabel>
+        </IonTabButton>
+      </IonTabBar>
+    </IonTabs>
   );
 }
 
@@ -131,7 +127,7 @@ function PublicRoutes() {
   );
 }
 
-export default function App() {
+export default function HTMLIonRouterOutletElement() {
   const [userIsAuthenticated, setUserIsAuthenticated] = useState(
     localStorage.getItem("userIsAuthenticated")
   );

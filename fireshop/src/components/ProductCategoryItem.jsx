@@ -1,4 +1,4 @@
-import "./ProductCategoryItem.css";
+import "./styles/ProductCategoryItem.css";
 import { IonImg, IonCard, IonCardContent } from "@ionic/react";
 
 export default function CategoryItem({ item }) {

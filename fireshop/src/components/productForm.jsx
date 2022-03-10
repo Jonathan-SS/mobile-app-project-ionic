@@ -6,28 +6,42 @@ import {
   IonImg,
   IonButton,
   IonIcon,
+  IonSelect,
+  IonSelectOption,
 } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { camera } from "ionicons/icons";
+import { Geolocation } from "@capacitor/geolocation";
 
 export default function ProductForm({ product, handleSubmit }) {
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState("");
+  const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
 
   useEffect(() => {
+    Geolocation.requestPermissions();
     if (product) {
       setTitle(product.title);
-      setBody(product.body);
+      setDescription(product.description);
+      setCategory(product.category);
       setImage(product.image);
+      setPrice(product.price);
     }
   }, [product]);
 
   function submitEvent(event) {
     event.preventDefault();
-    if (image !== "" && body !== "" && title !== "") {
-      const formData = { title: title, body: body, image: image };
+    if (
+      image !== "" &&
+      description !== "" &&
+      title !== "" &&
+      category !== "" &&
+      price !== ""
+    ) {
+      const formData = { title, description, image, category, price };
       handleSubmit(formData);
     } else {
       alert("Du mangler noget info");
@@ -59,13 +73,43 @@ export default function ProductForm({ product, handleSubmit }) {
         />
       </IonItem>
       <IonItem>
+        <IonLabel position="stacked">Price</IonLabel>
+        <IonInput
+          value={price}
+          placeholder="Set the price of your image"
+          onIonChange={(e) => setPrice(e.target.value)}
+        />
+      </IonItem>
+
+      <IonItem>
         <IonLabel position="stacked">Description</IonLabel>
         <IonTextarea
-          value={body}
+          value={description}
           placeholder="Tell us about your image"
-          onIonChange={(e) => setBody(e.target.value)}
+          onIonChange={(e) => setDescription(e.target.value)}
         ></IonTextarea>
       </IonItem>
+      <IonItem>
+        <IonLabel position="stacked">Category</IonLabel>
+        <IonSelect
+          value={category}
+          placeholder="Choose category"
+          okText="Okay"
+          cancelText="Dismiss"
+          interface="popover"
+          onIonChange={(e) => setCategory(e.detail.value)}
+        >
+          <IonSelectOption value="Biler">Biler</IonSelectOption>
+          <IonSelectOption value="Bøger">Bøger</IonSelectOption>
+          <IonSelectOption value="Cykler">Cykler</IonSelectOption>
+          <IonSelectOption value="Dyr">Dyr</IonSelectOption>
+          <IonSelectOption value="Elektronik">Elektronik</IonSelectOption>
+          <IonSelectOption value="Hus">Hus</IonSelectOption>
+          <IonSelectOption value="Sport">Sport</IonSelectOption>
+          <IonSelectOption value="Tøj">Tøj</IonSelectOption>
+        </IonSelect>
+      </IonItem>
+
       <IonItem onClick={takePicture} lines="none">
         <IonLabel>Choose Image</IonLabel>
         <IonButton>

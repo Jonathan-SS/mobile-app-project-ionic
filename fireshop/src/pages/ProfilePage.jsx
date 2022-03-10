@@ -4,36 +4,29 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonItem,
-  IonLabel,
   IonButtons,
   IonButton,
-  IonInput,
-  IonIcon,
-  IonImg,
-  useIonLoading,
+  IonModal,
+  IonListHeader,
+  IonList,
 } from "@ionic/react";
 
-import "../styles/Profile.css";
+import "./styles/ProfilePage.css";
 
 import { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { getUserRef } from "../firebase-config";
-import { get, update } from "@firebase/database";
-/* import { Camera, CameraResultType } from "@capacitor/camera"; */
-import { camera } from "ionicons/icons";
-import { uploadString, ref, getDownloadURL } from "@firebase/storage";
-import { storage } from "../firebase-config";
-/* import { Toast } from "@capacitor/toast"; */
+import { onSnapshot } from "firebase/firestore";
+import { get } from "@firebase/database";
+import UpdateProfile from "../components/UpdateProfile";
 
 export default function ProfilePage() {
-  const auth = getAuth();
+  const [showModal, setShowModal] = useState(false);
+  const pageEl = document.querySelector(".ion-page");
   const [user, setUser] = useState({});
   const [name, setName] = useState("");
-  const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [imageFile, setImageFile] = useState({});
-  const [showLoader, dismissLoader] = useIonLoading();
+  const auth = getAuth();
 
   useEffect(() => {
     setUser(auth.currentUser);
@@ -43,7 +36,6 @@ export default function ProfilePage() {
       const userData = snapshot.val();
       if (userData) {
         setName(userData.name);
-        setTitle(userData.title);
         setImage(userData.image);
       }
     }
@@ -55,92 +47,54 @@ export default function ProfilePage() {
     signOut(auth);
   }
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    showLoader();
-
-    const userToUpdate = {
-      name: name,
-      title: title,
-    };
-
-    /*    if (imageFile.dataUrl) {
-      const imageUrl = await uploadImage();
-      userToUpdate.image = imageUrl;
-    }
-
-    await update(getUserRef(user.uid), userToUpdate);
-    dismissLoader();
-    await Toast.show({
-      text: "User Profile saved!",
-      position: "top",
-    });
-}
-
-    async function takePicture() {
-        const imageOptions = {
-            quality: 80,
-            width: 500,
-            allowEditing: true,
-            resultType: CameraResultType.DataUrl
-        };
-        const image = await Camera.getPhoto(imageOptions);
-        setImageFile(image);
-        setImage(image.dataUrl);
-    }
-
-    async function uploadImage() {
-        const newImageRef = ref(storage, `${user.uid}.${imageFile.format}`);
-        await uploadString(newImageRef, imageFile.dataUrl, "data_url");
-        const url = await getDownloadURL(newImageRef);
-        return url;
-    }
-*/
-  }
   return (
     <IonPage className="posts-page">
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Profile Page</IonTitle>
-          <IonButtons slot="primary">
-            <IonButton onClick={handleSignOut}>Sign Out</IonButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
-        <IonItem>
-          <IonLabel>Mail:</IonLabel>
-          {user?.email}
-        </IonItem>
-        <IonItem>
-          <IonLabel>uid:</IonLabel>
-          {user?.uid}
-        </IonItem>
-        <form onSubmit={handleSubmit}>
-          <IonItem>
-            <IonLabel position="stacked">Name</IonLabel>
-            <IonInput
-              value={name}
-              type="text"
-              placeholder="Type your name"
-              onIonChange={(e) => setName(e.target.value)}
-            />
-          </IonItem>
-          <IonItem>
-            <IonLabel position="stacked">Title</IonLabel>
-            <IonInput
-              value={title}
-              type="text"
-              placeholder="Type your title"
-              onIonChange={(e) => setTitle(e.target.value)}
-            />
-          </IonItem>
-          <div className="ion-padding">
-            <IonButton type="submit" expand="block">
-              Save User
-            </IonButton>
-          </div>
-        </form>
+        <IonModal
+          isOpen={showModal}
+          cssClass="my-custom-class"
+          presentingElement={pageEl}
+          swipeToClose={true}
+          onDidDismiss={() => setShowModal(false)}
+        >
+          <IonHeader translucent>
+            <IonToolbar>
+              <IonTitle>Update Profile</IonTitle>
+              <IonButtons slot="end">
+                <IonButton onclick={() => setShowModal(false)}>Close</IonButton>
+              </IonButtons>
+            </IonToolbar>
+          </IonHeader>
+          <UpdateProfile />
+        </IonModal>
+        <IonHeader collapse="condense">
+          <IonToolbar>
+            <IonButtons slot="start">
+              <IonButton onClick={handleSignOut}>Sign Out</IonButton>
+            </IonButtons>
+            <IonButtons slot="primary">
+              <IonButton
+                onClick={() => setShowModal(true)}
+                color="none"
+                slot="primary"
+              >
+                Update Profile
+              </IonButton>
+            </IonButtons>
+          </IonToolbar>
+        </IonHeader>
+
+        <div className="pbContainer">
+          {image && (
+            <img alt="profileImage" className="profileImage" src={image} />
+          )}
+        </div>
+        <div>
+          <IonHeader className="welcomeText">Welcome {name}</IonHeader>
+        </div>
+
+        <IonListHeader>Your Products</IonListHeader>
+        <IonList className="product-list"></IonList>
       </IonContent>
     </IonPage>
   );
