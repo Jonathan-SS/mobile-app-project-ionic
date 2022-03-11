@@ -1,4 +1,9 @@
-import { IonSearchbar, IonContent, IonTitle } from "@ionic/react";
+import {
+  IonSearchbar,
+  IonContent,
+  IonTitle,
+  useIonLoading,
+} from "@ionic/react";
 import { useState } from "react";
 import { productsRef } from "../firebase-config.js";
 import { get } from "firebase/database";
@@ -7,8 +12,10 @@ import "./styles/SearchBar.css";
 
 export default function Searchbar() {
   const [searchResults, setSearchResults] = useState([]);
+  const [showLoader, dismissLoader] = useIonLoading();
 
   async function search(e) {
+    showLoader();
     let text = e.target.value.toLowerCase();
 
     try {
@@ -23,7 +30,7 @@ export default function Searchbar() {
         let result = matchingProducts.filter((product) =>
           product.title.toLowerCase().includes(text)
         );
-
+        dismissLoader();
         setSearchResults(result);
       } else if (snapshot.exists() && text === "") {
         let data = await snapshot.val();
@@ -31,6 +38,7 @@ export default function Searchbar() {
           id: key,
           ...data[key],
         }));
+        dismissLoader();
         setSearchResults(matchingProducts);
       }
     } catch (error) {

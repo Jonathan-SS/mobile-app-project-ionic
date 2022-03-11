@@ -4,6 +4,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 import "./styles//Add-products.css";
 import ProductForm from "../components/productForm";
@@ -11,6 +12,7 @@ import { Geolocation } from "@capacitor/geolocation";
 import { Toast } from "@capacitor/toast";
 import { useHistory } from "react-router";
 export default function AddProduct() {
+  const [showLoader, dismissLoader] = useIonLoading();
   const history = useHistory();
 
   const addedPost = async () => {
@@ -38,6 +40,7 @@ export default function AddProduct() {
   }
 
   async function handleSubmit(newPost) {
+    showLoader();
     Geolocation.requestPermissions();
     const location = await getLocation();
     newPost.city = location;
@@ -50,6 +53,7 @@ export default function AddProduct() {
     });
     const data = await response.json();
     console.log(data);
+    dismissLoader();
     history.replace("/home");
     addedPost();
   }
