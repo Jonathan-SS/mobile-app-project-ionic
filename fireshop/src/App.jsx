@@ -81,7 +81,7 @@ export default function App() {
 
 function PrivateRoutes() {
   return (
-    <IonTabs>
+    <IonTabs translucent="true">
       <IonRouterOutlet>
         <Route exact path="/home">
           <Home />

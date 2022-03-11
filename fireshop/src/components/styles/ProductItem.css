@@ -1,14 +1,14 @@
 .product-itemSearch {
-  min-width: 90%;
-  width: 90%;
+  min-width: 45%;
+  width: 45%;
   display: flex;
-  margin: auto;
   align-items: flex-end;
+  margin-bottom: 24px;
 }
 
 .product-imageSearch {
   display: block;
-  height: 250px;
+  height: 150px;
   object-fit: cover;
   object-position: center;
 }

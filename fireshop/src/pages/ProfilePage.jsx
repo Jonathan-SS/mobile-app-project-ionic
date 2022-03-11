@@ -16,7 +16,6 @@ import "./styles/ProfilePage.css";
 import { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { getUserRef } from "../firebase-config";
-import { onSnapshot } from "firebase/firestore";
 import { get } from "@firebase/database";
 import UpdateProfile from "../components/UpdateProfile";
 

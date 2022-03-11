@@ -10,6 +10,7 @@ import {
   IonList,
   IonListHeader,
   IonModal,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
@@ -18,32 +19,77 @@ import ProductListItem from "../components/ProductListItem";
 import CategoryItem from "../components/ProductCategoryItem";
 import { Geolocation } from "@capacitor/geolocation";
 import { useState } from "react";
-import { productsRef } from "../firebase-config";
-import { get } from "firebase/database";
-const geofire = require("geofire-common");
+import { database } from "../firebase-config";
+import {
+  get,
+  query,
+  orderByChild,
+  ref,
+  equalTo,
+  limitToFirst,
+} from "firebase/database";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
-  /*
-  async function closestTooMe() {
-    Geolocation.requestPermissions();
-    const coordinates = await Geolocation.getCurrentPosition().coords;
-    const center = [coordinates.latitude, coordinates.longitude];
+  const [productsCloseToMe, setProductsCloseToMe] = useState();
 
-    const radiusInM = 5000;
-    const bounds = geofire.geohashQueryBounds(center, radiusInM);
-    const promises = [];
-    let data = await get(productsRef).val;
-    const keyedProducts = Object.keys(data).map((key) => ({
-      id: key,
-      ...data[key],
-    }));
+  async function loadProducts(city) {
+    console.log("Det virker");
+    const aarhus = query(
+      ref(database, "products"),
+      orderByChild("city"),
+      equalTo(city),
+      limitToFirst(10)
+    );
 
-    for (const b of bounds) {
-      const q = keyedProducts.orderBy();
+    try {
+      let snapshot = await get(aarhus);
+
+      if (snapshot.exists()) {
+        let data = await snapshot.val();
+        const matchingProducts = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        matchingProducts.sort(
+          (product1, product2) => product2.dateAdded - product1.dateAdded
+        );
+        console.log(matchingProducts);
+        if (matchingProducts.length > 0) {
+          setProductsCloseToMe(matchingProducts);
+        }
+      } else {
+        console.log("no data");
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
-*/
+
+  const printCurrentPosition = async () => {
+    const coordinates = await Geolocation.getCurrentPosition();
+    return coordinates.coords;
+  };
+
+  async function getLocation() {
+    const coordsData = await printCurrentPosition();
+    const longitude = String(coordsData.longitude);
+    const latitude = String(coordsData.latitude);
+    //const koordinater = latitude + "," + longitude;
+    const url = `http://api.positionstack.com/v1/reverse?access_key=a1a44587e2c53335bf837acc103a4613&query=${latitude},${longitude}`;
+    const response = await fetch(url);
+    const data = await response.json();
+    const city = data.data[0].administrative_area;
+    return city;
+  }
+
+  async function getClosestToMe() {
+    const city = await getLocation();
+    await loadProducts(city);
+  }
+
+  useIonViewWillEnter(getClosestToMe, [productsCloseToMe, getClosestToMe]);
+
   const pageEl = document.querySelector(".ion-page");
 
   const categories = [
@@ -109,7 +155,7 @@ export default function Home() {
           </IonHeader>
           <Searchbar />
         </IonModal>
-        <IonHeader collapse="condense">
+        <IonHeader>
           <IonToolbar>
             <IonTitle size="large">Home</IonTitle>
             <IonButton
@@ -129,12 +175,13 @@ export default function Home() {
 
         <IonListHeader>Products near you</IonListHeader>
         <IonList className="product-list">
-          <ProductListItem />
-          <ProductListItem />
-          <ProductListItem />
-          <ProductListItem />
-          <ProductListItem />
-          <ProductListItem />
+          {productsCloseToMe ? (
+            productsCloseToMe.map((product) => (
+              <ProductListItem key={product.id} product={product} />
+            ))
+          ) : (
+            <></>
+          )}
         </IonList>
         <IonListHeader>Categories</IonListHeader>
         <IonList className="categoryList">
