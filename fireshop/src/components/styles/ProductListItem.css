@@ -1,21 +1,23 @@
 .product-item {
-  min-width: 66%;
-  width: 66%;
+  min-width: 50%;
+  width: 50%;
   display: flex;
   align-items: flex-end;
+  margin: 8px 16px 16px 0;
 }
 
 .product-image {
   display: block;
   height: 200px;
   object-fit: cover;
-  object-position: center;
+  object-position: center center;
 }
 
 .item-content {
   position: absolute;
   bottom: 0;
   color: #fff;
+  padding: 10px;
 }
 
 .img-gradient {
@@ -33,7 +35,7 @@
   display: inline-block;
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0) 60%,
     rgba(0, 0, 0, 0.6) 90%
   );
 }

@@ -99,14 +99,14 @@ export default function ProductForm({ product, handleSubmit }) {
           interface="popover"
           onIonChange={(e) => setCategory(e.detail.value)}
         >
-          <IonSelectOption value="Biler">Biler</IonSelectOption>
-          <IonSelectOption value="Bøger">Bøger</IonSelectOption>
-          <IonSelectOption value="Cykler">Cykler</IonSelectOption>
-          <IonSelectOption value="Dyr">Dyr</IonSelectOption>
-          <IonSelectOption value="Elektronik">Elektronik</IonSelectOption>
-          <IonSelectOption value="Hus">Hus</IonSelectOption>
-          <IonSelectOption value="Sport">Sport</IonSelectOption>
-          <IonSelectOption value="Tøj">Tøj</IonSelectOption>
+          <IonSelectOption value="cars">Cars</IonSelectOption>
+          <IonSelectOption value="books">Books</IonSelectOption>
+          <IonSelectOption value="bikes">Bikes</IonSelectOption>
+          <IonSelectOption value="animals">Animals</IonSelectOption>
+          <IonSelectOption value="electronics">Electronics</IonSelectOption>
+          <IonSelectOption value="house">House</IonSelectOption>
+          <IonSelectOption value="sport">Sport</IonSelectOption>
+          <IonSelectOption value="clothes">Clothes</IonSelectOption>
         </IonSelect>
       </IonItem>
 

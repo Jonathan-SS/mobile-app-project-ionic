@@ -11,6 +11,7 @@ import {
   IonListHeader,
   IonModal,
   useIonViewWillEnter,
+  IonLabel,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
@@ -20,6 +21,8 @@ import CategoryItem from "../components/ProductCategoryItem";
 import { Geolocation } from "@capacitor/geolocation";
 import { useState } from "react";
 import { database } from "../firebase-config";
+import ProductLoading from "../components/ProductLoading";
+
 import {
   get,
   query,
@@ -35,7 +38,7 @@ export default function Home() {
 
   async function loadProducts(city) {
     console.log("Det virker");
-    const aarhus = query(
+    const cityProducts = query(
       ref(database, "products"),
       orderByChild("city"),
       equalTo(city),
@@ -43,7 +46,7 @@ export default function Home() {
     );
 
     try {
-      let snapshot = await get(aarhus);
+      let snapshot = await get(cityProducts);
 
       if (snapshot.exists()) {
         let data = await snapshot.val();
@@ -95,43 +98,51 @@ export default function Home() {
   const categories = [
     {
       image: "../../assets/kategori-icons/bil.svg",
-      category: "Biler",
+      category: "Cars",
       key: 1,
+      link: "cars",
     },
     {
       image: "../../assets/kategori-icons/boeger.svg",
-      category: "Bøger",
+      category: "Books",
       key: 2,
+      link: "books",
     },
     {
       image: "../../assets/kategori-icons/cykler.svg",
-      category: "Cykler",
+      category: "Bikes",
       key: 3,
+      link: "bikes",
     },
     {
       image: "../../assets/kategori-icons/dyr.svg",
-      category: "Dyr",
+      category: "Animals",
       key: 4,
+      link: "animals",
     },
     {
       image: "../../assets/kategori-icons/elektronik.svg",
-      category: "Elektronik",
+      category: "Electronics",
       key: 5,
+      link: "electronics",
     },
     {
       image: "../../assets/kategori-icons/hus.svg",
-      category: "Hus",
+      category: "House",
       key: 6,
+      link: "house",
     },
     {
       image: "../../assets/kategori-icons/sport.svg",
       category: "Sport",
       key: 7,
+      link: "sport",
     },
     {
       image: "../../assets/kategori-icons/toej.svg",
-      category: "Tøj",
+      category: "Clothes",
       key: 8,
+      link: "clothes",
     },
   ];
 
@@ -155,13 +166,15 @@ export default function Home() {
           </IonHeader>
           <Searchbar />
         </IonModal>
-        <IonHeader>
+        <IonHeader collapse="fade" translucent>
           <IonToolbar>
             <IonTitle size="large">Home</IonTitle>
             <IonButton
               onClick={() => setShowModal(true)}
               color="none"
               slot="end"
+              box-shadow="false"
+              collapse
             >
               <IonIcon
                 color="dark"
@@ -172,18 +185,23 @@ export default function Home() {
             </IonButton>
           </IonToolbar>
         </IonHeader>
+        <IonListHeader>
+          <IonLabel>Products near you</IonLabel>
+        </IonListHeader>
 
-        <IonListHeader>Products near you</IonListHeader>
         <IonList className="product-list">
           {productsCloseToMe ? (
             productsCloseToMe.map((product) => (
               <ProductListItem key={product.id} product={product} />
             ))
           ) : (
-            <></>
+            <ProductLoading />
           )}
         </IonList>
-        <IonListHeader>Categories</IonListHeader>
+        <IonListHeader>
+          <IonLabel>Categories</IonLabel>
+        </IonListHeader>
+
         <IonList className="categoryList">
           {categories.map((category) => (
             <CategoryItem key={category.key} item={category} />

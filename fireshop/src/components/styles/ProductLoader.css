@@ -1,0 +1,49 @@
+.product-item-loader {
+  min-width: 50%;
+  width: 50%;
+  min-height: 200px;
+  display: flex;
+  align-items: flex-end;
+  margin: 8px 16px 16px 0;
+}
+
+.item-content-loader {
+  position: absolute;
+  bottom: 0;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+}
+
+.product-title-loader {
+  height: 16px;
+  width: 66%;
+  margin-bottom: 4px;
+  border-radius: 10px;
+}
+.product-price-loader {
+  height: 16px;
+  width: 33%;
+  border-radius: 10px;
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 200px 0;
+  }
+}
+
+.animated-background {
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-name: placeHolderShimmer;
+  animation-timing-function: linear;
+  background-color: #f6f7f8;
+  background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 15%, #eeeeee 33%);
+  background-size: 800px 20px;
+  position: relative;
+}
