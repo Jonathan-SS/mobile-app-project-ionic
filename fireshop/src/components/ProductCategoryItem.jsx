@@ -3,11 +3,12 @@ import { IonImg, IonCard, IonCardContent } from "@ionic/react";
 
 export default function CategoryItem({ item }) {
   return (
-    <IonCard routerLink={`/category/${item.link}`} className="category-item ">
+    <IonCard className="category-item ">
       <IonImg className="category-image" src={item.image} />
       <IonCardContent className="category-content">
         {item.category}
       </IonCardContent>
+      <a className="card-native" href={`/category/${item.link}`}></a>
     </IonCard>
   );
 }
