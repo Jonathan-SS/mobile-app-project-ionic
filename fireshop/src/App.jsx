@@ -36,8 +36,8 @@ import "./theme/variables.css";
 import { useEffect, useState } from "react";
 import SignInPage from "./pages/SignInPage";
 import SignUpPage from "./pages/SignUpPage";
-import CategoryView from "./pages/CategoryPage";
 import ProfilePage from "./pages/ProfilePage";
+import CategoryPage from "./pages/CategoryPage";
 setupIonicReact();
 /*
 export default function App() {
@@ -82,11 +82,11 @@ export default function App() {
 function PrivateRoutes() {
   return (
     <IonTabs>
-      <IonRouterOutlet animated>
+      <IonRouterOutlet>
         <Route exact path="/home" component={Home} />
         <Route exact path="/add-product" component={AddProduct} />
         <Route exact path="/profile" component={ProfilePage} />
-        <Route exact path="/category/:categoryName" component={CategoryView} />
+        <Route path="/category/:categoryName" component={CategoryPage} />
 
         <Route exact path="/">
           <Redirect to="/home" />

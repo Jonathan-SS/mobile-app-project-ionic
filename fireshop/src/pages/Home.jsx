@@ -79,7 +79,6 @@ export default function Home() {
     const coordsData = await printCurrentPosition();
     const longitude = String(coordsData.longitude);
     const latitude = String(coordsData.latitude);
-    //const koordinater = latitude + "," + longitude;
     const url = `http://api.positionstack.com/v1/reverse?access_key=a1a44587e2c53335bf837acc103a4613&query=${latitude},${longitude}`;
     const response = await fetch(url);
     const data = await response.json();
@@ -206,6 +205,7 @@ export default function Home() {
         <IonList className="categoryList">
           {categories.map((category) => (
             <IonRouterLink
+              routerDirection="forward"
               key={category.key}
               routerLink={`/category/${category.link}`}
             >

@@ -1,61 +1,90 @@
-import { IonContent, IonTitle, useIonLoading } from "@ionic/react";
-
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonButtons,
+  useIonLoading,
+  IonBackButton,
+} from "@ionic/react";
 import { useEffect, useState } from "react";
-import ProductItem from "../components/ProductItem";
-import { database } from "../firebase-config";
-import { equalTo, get, orderByChild, query } from "firebase/database";
 import { useParams } from "react-router";
-import { ref } from "firebase/storage";
+import { query, ref, orderByChild, equalTo, get } from "firebase/database";
+import { database } from "../firebase-config";
 
-export default function CategoryView() {
+import "./styles/CategoryPage.css";
+import ProductItem from "../components/ProductItem";
+
+export default function CategoryPage() {
   const [categoryResults, setCategoryResults] = useState([]);
+  const [results, setResults] = useState(false);
   const [showLoader, dismissLoader] = useIonLoading();
-  const { categoryName } = useParams();
+  const categoryName = useParams().categoryName;
 
-  async function categoryProducts(test) {
-    showLoader();
+  useEffect(() => {
+    async function categoryProducts() {
+      showLoader();
 
-    const categoryProducts = query(
-      ref(database, "products"),
-      orderByChild("city"),
-      equalTo(categoryName)
-    );
+      const categoryProducts = query(
+        ref(database, "products"),
+        orderByChild("category"),
+        equalTo(categoryName)
+      );
 
-    try {
-      let snapshot = await get(categoryProducts);
+      try {
+        let snapshot = await get(categoryProducts);
 
-      if (snapshot.exists()) {
-        let data = await snapshot.val();
-        const matchingProducts = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        dismissLoader();
-        setCategoryResults(matchingProducts);
-      } else {
-        console.log("no data found");
+        if (snapshot.exists()) {
+          let data = await snapshot.val();
+          const matchingProducts = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key],
+          }));
+          dismissLoader();
+          console.log(matchingProducts);
+          setCategoryResults(matchingProducts);
+          setResults(true);
+        } else {
+          console.log("no data found");
+          setCategoryResults([]);
+          setResults(false);
+          dismissLoader();
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
     }
-  }
-
-  // useEffect(categoryProducts, [categoryProducts]);
+    categoryProducts();
+  }, [categoryName, dismissLoader, showLoader]);
+  console.log(categoryName);
   return (
-    <IonContent className="product-listSearch">
-      {categoryResults ? (
-        categoryResults.map((product) => (
-          <ProductItem
-            className="productItemSearch"
-            key={product.id}
-            product={product}
-          />
-        ))
-      ) : (
-        <>
-          <IonTitle>Search for products</IonTitle>
-        </>
-      )}
-    </IonContent>
+    <IonPage>
+      <IonHeader collapse="fade" translucent>
+        <IonToolbar>
+          <IonButtons>
+            <IonBackButton defaultHref="/" slot="start" />
+          </IonButtons>
+          <IonTitle size="medium" slot="end">
+            Showing category: {categoryName}
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="product-listSearch">
+        {results ? (
+          categoryResults.map((product) => (
+            <ProductItem
+              className="productItemSearch"
+              key={product.id}
+              product={product}
+            />
+          ))
+        ) : (
+          <>
+            <IonTitle>No products found.</IonTitle>
+          </>
+        )}
+      </IonContent>
+    </IonPage>
   );
 }

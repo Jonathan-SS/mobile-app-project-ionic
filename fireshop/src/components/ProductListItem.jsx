@@ -9,7 +9,6 @@ import { ref, deleteObject } from "@firebase/storage";
 import { getAuth } from "firebase/auth";*/
 
 export default function ProductListItem({ product }) {
-  console.log(product);
   return (
     <>
       <IonCard className="product-item ">
