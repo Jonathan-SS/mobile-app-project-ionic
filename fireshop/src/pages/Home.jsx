@@ -12,6 +12,7 @@ import {
   IonModal,
   useIonViewWillEnter,
   IonLabel,
+  IonRouterLink,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
@@ -204,7 +205,12 @@ export default function Home() {
 
         <IonList className="categoryList">
           {categories.map((category) => (
-            <CategoryItem key={category.key} item={category} />
+            <IonRouterLink
+              key={category.key}
+              routerLink={`/category/${category.link}`}
+            >
+              <CategoryItem item={category} />
+            </IonRouterLink>
           ))}
         </IonList>
       </IonContent>

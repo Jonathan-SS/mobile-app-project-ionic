@@ -86,7 +86,7 @@ function PrivateRoutes() {
         <Route exact path="/home" component={Home} />
         <Route exact path="/add-product" component={AddProduct} />
         <Route exact path="/profile" component={ProfilePage} />
-        <Route path="/category/:categoryName" component={CategoryView} />
+        <Route exact path="/category/:categoryName" component={CategoryView} />
 
         <Route exact path="/">
           <Redirect to="/home" />

@@ -15,3 +15,7 @@
   justify-content: space-around;
   padding-bottom: 30px;
 }
+
+ion-router-link.ios.ion-activatable {
+  width: 47%;
+}

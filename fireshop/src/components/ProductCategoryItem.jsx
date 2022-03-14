@@ -8,7 +8,6 @@ export default function CategoryItem({ item }) {
       <IonCardContent className="category-content">
         {item.category}
       </IonCardContent>
-      <a className="card-native" href={`/category/${item.link}`}></a>
     </IonCard>
   );
 }
