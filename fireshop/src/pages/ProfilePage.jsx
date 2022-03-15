@@ -23,7 +23,7 @@ export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
   const pageEl = document.querySelector(".ion-page");
   const [user, setUser] = useState({});
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [image, setImage] = useState("");
   const auth = getAuth();
 
@@ -34,7 +34,7 @@ export default function ProfilePage() {
       const snapshot = await get(getUserRef(user.uid));
       const userData = snapshot.val();
       if (userData) {
-        setName(userData.name);
+        setFirstName(userData.firstName);
         setImage(userData.image);
       }
     }
@@ -89,7 +89,7 @@ export default function ProfilePage() {
           )}
         </div>
         <div>
-          <IonHeader className="welcomeText">Welcome {name}</IonHeader>
+          <IonHeader className="welcomeText">Welcome {firstName}</IonHeader>
         </div>
 
         <IonListHeader>Your Products</IonListHeader>
