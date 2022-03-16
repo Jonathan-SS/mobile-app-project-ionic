@@ -25,12 +25,12 @@ import { database } from "../firebase-config";
 import ProductLoading from "../components/ProductLoading";
 
 import {
-  get,
   query,
   orderByChild,
   ref,
   equalTo,
   limitToFirst,
+  onValue,
 } from "firebase/database";
 
 export default function Home() {
@@ -39,35 +39,28 @@ export default function Home() {
 
   async function loadProducts(city) {
     console.log("Det virker");
+
     const cityProducts = query(
       ref(database, "products"),
       orderByChild("city"),
       equalTo(city),
       limitToFirst(10)
     );
+    onValue(cityProducts, (snapshot) => {
+      const productsArr = [];
+      snapshot.forEach((productSnapshot) => {
+        const id = productSnapshot.key;
+        const data = productSnapshot.val();
+        data.id = id;
 
-    try {
-      let snapshot = await get(cityProducts);
-
-      if (snapshot.exists()) {
-        let data = await snapshot.val();
-        const matchingProducts = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        matchingProducts.sort(
-          (product1, product2) => product2.dateAdded - product1.dateAdded
-        );
-        console.log(matchingProducts);
-        if (matchingProducts.length > 0) {
-          setProductsCloseToMe(matchingProducts);
-        }
-      } else {
-        console.log("no data");
+        productsArr.push(data);
+      });
+      if (productsArr.length > 0) {
+        setProductsCloseToMe(productsArr);
       }
-    } catch (error) {
-      console.error(error);
-    }
+
+      console.log(productsArr);
+    });
   }
 
   const printCurrentPosition = async () => {

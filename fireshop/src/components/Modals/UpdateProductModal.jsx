@@ -13,15 +13,11 @@ import ProductForm from "../productForm";
 
 export default function ProductUpdateModal({ product, dismiss }) {
   async function handleSubmit(productToUpdate) {
-    console.log(productToUpdate);
-    console.log(product.id);
     await update(getProdutcsRef(product.id), productToUpdate);
     await Toast.show({
       text: "You updated your post",
       position: "top",
     });
-
-    dismiss();
   }
 
   return (

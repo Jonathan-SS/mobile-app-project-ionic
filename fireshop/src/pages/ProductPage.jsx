@@ -4,12 +4,9 @@ import {
   useIonLoading,
   IonList,
   IonBackButton,
-  IonCardHeader,
   IonHeader,
   IonToolbar,
   IonButtons,
-  IonButton,
-  IonLabel,
   IonTitle,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
@@ -20,7 +17,6 @@ import { getAuth } from "firebase/auth";
 
 import "./styles/ProductPage.css";
 import SingleProduct from "../components/SingleProduct";
-import { backspaceOutline } from "ionicons/icons";
 
 export default function ProductPage() {
   const [product, setProduct] = useState({});
@@ -34,36 +30,30 @@ export default function ProductPage() {
     if (auth.currentUser.uid) {
       setCurrentUser(auth.currentUser.uid);
     }
-    console.log(currentUser);
-    async function getUserInfo(productUserId) {
+
+    async function getUserData(productUserId) {
       const snapshot = await get(getUserRef(productUserId));
       const userData = snapshot.val();
-      console.log(userData);
-      return userData;
+      if (productUserId) {
+        setUserInfo(userData);
+      }
     }
-
     async function singleProduct() {
       showLoader();
 
-      try {
-        onValue(getProdutcsRef(productId), (snapshot) => {
-          const data = snapshot.val();
-          console.log(data);
-          data.id = productId;
-          setProduct(data);
-          dismissLoader();
-        });
-        if (product.ptoductId) {
-          const userData = await getUserInfo(product.productId);
-          setUserInfo(userData);
-        }
-      } catch (error) {
-        console.error(error);
+      onValue(getProdutcsRef(productId), (snapshot) => {
+        const data = snapshot.val();
+        data.id = productId;
+
+        setProduct(data);
+        getUserData(data.productId);
         dismissLoader();
-      }
+      });
+
       dismissLoader();
     }
     singleProduct();
+    getUserData();
   }, [productId, dismissLoader, showLoader]);
 
   return (

@@ -7,11 +7,10 @@ import {
   IonButtons,
   useIonLoading,
   IonBackButton,
-  useIonViewWillEnter,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { query, ref, orderByChild, equalTo, get } from "firebase/database";
+import { query, ref, orderByChild, equalTo, onValue } from "firebase/database";
 import { database } from "../firebase-config";
 
 import "./styles/CategoryPage.css";
@@ -19,44 +18,33 @@ import ProductItem from "../components/ProductItem";
 
 export default function CategoryPage() {
   const [categoryResults, setCategoryResults] = useState([]);
-  const [results, setResults] = useState(false);
+
   const [showLoader, dismissLoader] = useIonLoading();
   const categoryName = useParams().categoryName;
 
-  async function categoryProducts() {
-    showLoader();
+  useEffect(() => {
+    console.log("noget");
+    function loadCategory() {
+      const categoryProducts = query(
+        ref(database, "products"),
+        orderByChild("category"),
+        equalTo(categoryName)
+      );
+      onValue(categoryProducts, (snapshot) => {
+        const productsArr = [];
+        snapshot.forEach((productSnapshot) => {
+          const id = productSnapshot.key;
+          const data = productSnapshot.val();
+          data.id = id;
 
-    const categoryProducts = query(
-      ref(database, "products"),
-      orderByChild("category"),
-      equalTo(categoryName)
-    );
+          productsArr.push(data);
+        });
 
-    try {
-      let snapshot = await get(categoryProducts);
-
-      if (snapshot.exists()) {
-        let data = await snapshot.val();
-        const matchingProducts = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        dismissLoader();
-
-        setCategoryResults(matchingProducts);
-        setResults(true);
-      } else {
-        console.log("no data found");
-        setCategoryResults([]);
-        setResults(false);
-        dismissLoader();
-      }
-    } catch (error) {
-      console.error(error);
+        setCategoryResults(productsArr);
+      });
     }
-  }
-
-  useIonViewWillEnter(categoryProducts, [showLoader, dismissLoader]);
+    loadCategory();
+  }, [showLoader, dismissLoader, categoryName]);
 
   return (
     <IonPage>
@@ -71,7 +59,7 @@ export default function CategoryPage() {
         </IonToolbar>
       </IonHeader>
       <IonContent className="product-listSearch">
-        {results ? (
+        {categoryResults ? (
           categoryResults.map((product) => (
             <ProductItem
               className="productItemSearch"

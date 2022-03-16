@@ -53,7 +53,7 @@ export default function AddProduct() {
       body: JSON.stringify(newPost),
     });
     const data = await response.json();
-    console.log(data);
+
     dismissLoader();
     history.replace("/home");
     addedPost();

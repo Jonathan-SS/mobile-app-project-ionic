@@ -57,16 +57,14 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
   }
 
   async function deletePost() {
-    console.log(product.id);
     await remove(getProdutcsRef(product.id));
+    history.go("/");
 
     await Toast.show({
       text: "New post created!",
       position: "center",
     });
   }
-
-  console.log(userInfo);
 
   return (
     <IonCard>

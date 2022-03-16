@@ -9,9 +9,7 @@ import {
   IonModal,
   IonListHeader,
   IonList,
-  useIonViewWillEnter,
   IonRouterLink,
-  useIonLoading,
 } from "@ionic/react";
 
 import "./styles/ProfilePage.css";
@@ -20,14 +18,7 @@ import { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { database } from "../firebase-config";
 import { getUserRef } from "../firebase-config";
-import {
-  get,
-  query,
-  orderByChild,
-  ref,
-  equalTo,
-  limitToFirst,
-} from "firebase/database";
+import { get, query, orderByChild, ref, equalTo } from "firebase/database";
 
 import UpdateProfile from "../components/UpdateProfile";
 import ProductListItem from "../components/ProductListItem";
