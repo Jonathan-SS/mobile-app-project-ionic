@@ -185,44 +185,48 @@ export default function Home() {
             </IonButton>
           </IonToolbar>
         </IonHeader>
-        <IonListHeader>
-          <IonLabel>Products near you</IonLabel>
-        </IonListHeader>
+        <div className="wrapper">
+          <div className="blob-wrapper"></div>
+          <IonListHeader>
+            <IonLabel>Products near you</IonLabel>
+          </IonListHeader>
 
-        <IonList className="product-list">
-          {productsCloseToMe ? (
-            productsCloseToMe.map((product) => (
+          <IonList className="product-list">
+            {productsCloseToMe ? (
+              productsCloseToMe.map((product) => (
+                <IonRouterLink
+                  routerDirection="forward"
+                  key={product.id}
+                  routerLink={`/product/${product.id}`}
+                >
+                  <ProductListItem
+                    key={product.id}
+                    product={product}
+                    pageEl={pageEl}
+                  />
+                </IonRouterLink>
+              ))
+            ) : (
+              <ProductLoading />
+            )}
+          </IonList>
+
+          <IonListHeader>
+            <IonLabel>Categories</IonLabel>
+          </IonListHeader>
+
+          <IonList className="categoryList">
+            {categories.map((category) => (
               <IonRouterLink
                 routerDirection="forward"
-                key={product.id}
-                routerLink={`/product/${product.id}`}
+                key={category.key}
+                routerLink={`/category/${category.link}`}
               >
-                <ProductListItem
-                  key={product.id}
-                  product={product}
-                  pageEl={pageEl}
-                />
+                <CategoryItem item={category} />
               </IonRouterLink>
-            ))
-          ) : (
-            <ProductLoading />
-          )}
-        </IonList>
-        <IonListHeader>
-          <IonLabel>Categories</IonLabel>
-        </IonListHeader>
-
-        <IonList className="categoryList">
-          {categories.map((category) => (
-            <IonRouterLink
-              routerDirection="forward"
-              key={category.key}
-              routerLink={`/category/${category.link}`}
-            >
-              <CategoryItem item={category} />
-            </IonRouterLink>
-          ))}
-        </IonList>
+            ))}
+          </IonList>
+        </div>
       </IonContent>
     </IonPage>
   );
