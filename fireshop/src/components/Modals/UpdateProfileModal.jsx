@@ -1,5 +1,5 @@
 import { IonModal, IonContent } from "remix";
-import UpdateProfile from "./UpdateProfile";
+import UpdateProfile from "../UpdateProfile";
 export default function UpdateModal() {
   return (
     <>

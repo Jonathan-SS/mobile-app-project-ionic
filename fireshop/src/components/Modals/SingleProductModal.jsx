@@ -1,15 +1,15 @@
 import { IonModal, IonContent } from "remix";
-import Searchbar from "./SearchBar";
-export default function SearchModal() {
+import SingleProduct from "../SingleProduct";
+export default function SingleProductModal() {
   return (
     <>
       <IonModal
         isOpen={true}
         swipeToClose={true}
-        presentingElement={Searchbar || undefined}
+        presentingElement={SingleProduct || undefined}
       >
         <IonContent>
-          <Searchbar />
+          <SingleProduct />
         </IonContent>
       </IonModal>
     </>

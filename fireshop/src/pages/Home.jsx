@@ -192,7 +192,13 @@ export default function Home() {
         <IonList className="product-list">
           {productsCloseToMe ? (
             productsCloseToMe.map((product) => (
-              <ProductListItem key={product.id} product={product} />
+              <IonRouterLink
+                routerDirection="forward"
+                key={product.id}
+                routerLink={`/products/${product.id}`}
+              >
+                <ProductListItem key={product.id} product={product} />
+              </IonRouterLink>
             ))
           ) : (
             <ProductLoading />

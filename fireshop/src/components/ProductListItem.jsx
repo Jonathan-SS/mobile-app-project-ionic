@@ -1,6 +1,6 @@
 import { IonImg, IonCard, IonCardContent } from "@ionic/react";
-import "./styles/ProductListItem.css"; /*
-import { useHistory } from "react-router-dom";
+import "./styles/ProductListItem.css";
+import { useHistory } from "react-router-dom"; /*
 import { Toast } from "@capacitor/toast";
 import PostUpdateModal from "./PostUpdateModal";
 import { remove } from "@firebase/database";
@@ -9,9 +9,15 @@ import { ref, deleteObject } from "@firebase/storage";
 import { getAuth } from "firebase/auth";*/
 
 export default function ProductListItem({ product }) {
+  const history = useHistory();
+
+  function goToUserDetailView() {
+    history.push(`product/${product.uid}`);
+  }
+
   return (
     <>
-      <IonCard className="product-item ">
+      <IonCard onClick={goToUserDetailView} className="product-item ">
         <div className="img-gradient">
           <IonImg
             height="200px"
