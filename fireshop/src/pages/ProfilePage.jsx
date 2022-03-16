@@ -9,15 +9,29 @@ import {
   IonModal,
   IonListHeader,
   IonList,
+  useIonViewWillEnter,
+  IonRouterLink,
+  useIonLoading,
 } from "@ionic/react";
 
 import "./styles/ProfilePage.css";
 
 import { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
+import { database } from "../firebase-config";
 import { getUserRef } from "../firebase-config";
-import { get } from "@firebase/database";
+import {
+  get,
+  query,
+  orderByChild,
+  ref,
+  equalTo,
+  limitToFirst,
+} from "firebase/database";
+
 import UpdateProfile from "../components/UpdateProfile";
+import ProductListItem from "../components/ProductListItem";
+import ProductLoading from "../components/ProductLoading";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
@@ -26,6 +40,9 @@ export default function ProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [image, setImage] = useState("");
   const auth = getAuth();
+  const [ProductResults, setProductResults] = useState([]);
+  const [myProducts, setMyProducts] = useState();
+  const [results, setResults] = useState(false);
 
   useEffect(() => {
     setUser(auth.currentUser);
@@ -40,6 +57,36 @@ export default function ProfilePage() {
     }
 
     if (user) getUserDataFromDB();
+
+    async function myProducts(user, products) {
+      const myProducts = query(
+        ref(database, "products"),
+        orderByChild("productid"),
+        equalTo(user.uid)
+      );
+
+      try {
+        let snapshot = await get(myProducts);
+
+        if (snapshot.exists()) {
+          let data = await snapshot.val();
+          const matchingProducts = Object.keys(data).map((key) => ({
+            id: key,
+            ...data[key],
+          }));
+
+          setMyProducts(matchingProducts);
+          setResults(true);
+        } else {
+          console.log("no data found");
+          setProductResults([]);
+          setResults(false);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    myProducts();
   }, [auth.currentUser, user]);
 
   function handleSignOut() {
@@ -92,8 +139,25 @@ export default function ProfilePage() {
           <IonHeader className="welcomeText">Welcome {firstName}</IonHeader>
         </div>
 
-        <IonListHeader>Your Products</IonListHeader>
+        <IonListHeader className="products-header">Your Products</IonListHeader>
         <IonList className="product-list"></IonList>
+        {myProducts ? (
+          myProducts.map((product) => (
+            <IonRouterLink
+              routerDirection="forward"
+              key={product.id}
+              routerLink={`/product/${product.id}`}
+            >
+              <ProductListItem
+                key={product.id}
+                product={product}
+                pageEl={pageEl}
+              />
+            </IonRouterLink>
+          ))
+        ) : (
+          <ProductLoading />
+        )}
       </IonContent>
     </IonPage>
   );
