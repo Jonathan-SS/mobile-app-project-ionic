@@ -8,10 +8,12 @@ import {
   IonLabel,
   IonInput,
   IonButton,
+  IonImg,
 } from "@ionic/react";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import "./styles/SignIn-SignUp.css";
 
 export default function SignInPage() {
   const [mail, setMail] = useState("");
@@ -40,6 +42,14 @@ export default function SignInPage() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
+        <div>
+          <IonImg
+            className="welcome-image"
+            src="../../assets/icon/android-chrome-256x256.png"
+          />
+          <h2 className="welcome-message">Welcome to FireShop</h2>
+          <h4 className="signin-message">Please sign in below</h4>
+        </div>
         <form onSubmit={handleSubmit}>
           <IonItem>
             <IonLabel position="stacked">Mail</IonLabel>
@@ -65,8 +75,10 @@ export default function SignInPage() {
             </IonButton>
           </div>
           <div className="ion-text-center">
+            <h4 className="signup-message">Don't have an account?</h4>
             <IonButton
-              size="small"
+              className="sign-button"
+              size="medium"
               fill="clear"
               onClick={() => history.replace("/signup")}
             >

@@ -1,6 +1,6 @@
 .product-item {
-  min-width: 50%;
-  width: 50%;
+  min-width: 100%;
+  width: 100%;
   display: flex;
   align-items: flex-end;
   margin: 8px 16px 16px 0;
