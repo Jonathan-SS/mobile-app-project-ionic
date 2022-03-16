@@ -15,8 +15,6 @@ import { camera } from "ionicons/icons";
 import { Geolocation } from "@capacitor/geolocation";
 import { getAuth } from "firebase/auth";
 import { Toast } from "@capacitor/toast";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
-import { storage } from "../firebase-config";
 
 export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [title, setTitle] = useState("");
@@ -26,7 +24,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [user, setUser] = useState({});
-  const [imageFile, setImageFile] = useState({});
 
   const auth = getAuth();
 
@@ -65,15 +62,11 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
         category,
         price,
       };
-      if (imageFile.dataUrl) {
-        const imageUrl = await uploadImage();
-        formData.image = imageUrl;
-      }
       handleSubmit(formData);
     } else {
       await Toast.show({
-        text: "You are missing some informaiton about your product!",
-        position: "top",
+        text: "You are missing some informaiton about your",
+        position: "center",
       });
     }
   }
@@ -82,20 +75,13 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     const imageOptions = {
       quality: 80,
       width: 500,
+      allowEditing: true,
       resultType: CameraResultType.DataUrl,
     };
     const image = await Camera.getPhoto(imageOptions);
-    setImageFile(image);
-    setImage(image.dataUrl);
+    const imageUrl = image.dataUrl;
+    setImage(imageUrl);
   }
-
-  async function uploadImage() {
-    const newImageRef = ref(storage, `${product.id}.${imageFile.format}`);
-    await uploadString(newImageRef, imageFile.dataUrl, "data_url");
-    const url = await getDownloadURL(newImageRef);
-    return url;
-  }
-
   return (
     <form onSubmit={submitEvent}>
       {image && (

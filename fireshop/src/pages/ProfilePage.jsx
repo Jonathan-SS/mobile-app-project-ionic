@@ -58,10 +58,11 @@ export default function ProfilePage() {
 
     if (user) getUserDataFromDB();
 
-    async function myProducts(user, products) {
+    async function myProducts() {
+      console.log(user.uid);
       const myProducts = query(
         ref(database, "products"),
-        orderByChild("productid"),
+        orderByChild("productId"),
         equalTo(user.uid)
       );
 
