@@ -18,12 +18,13 @@
   max-width: 100%;
   width: 100%;
   padding: 0 20px;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-bottom: 30px;
 }
 
 .categoryList ion-router-link.ios.ion-activatable {
-  width: 47%;
+  width: 48%;
+  margin-bottom: 5px;
 }
 
 .list-ios {
