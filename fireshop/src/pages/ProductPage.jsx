@@ -1,21 +1,33 @@
-import { IonContent, IonPage, useIonLoading, IonList } from "@ionic/react";
+import {
+  IonContent,
+  IonPage,
+  useIonLoading,
+  IonList,
+  IonBackButton,
+  IonCardHeader,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonButton,
+  IonLabel,
+  IonTitle,
+} from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { get } from "firebase/database";
+import { get, onValue } from "firebase/database";
 import { getProdutcsRef, getUserRef } from "../firebase-config";
 import { getAuth } from "firebase/auth";
 
-import "./styles/CategoryPage.css";
+import "./styles/ProductPage.css";
 import SingleProduct from "../components/SingleProduct";
+import { backspaceOutline } from "ionicons/icons";
 
 export default function ProductPage() {
   const [product, setProduct] = useState({});
   const [userInfo, setUserInfo] = useState({});
   const [currentUser, setCurrentUser] = useState();
-
   const [showLoader, dismissLoader] = useIonLoading();
   const productId = useParams().productId;
-
   const auth = getAuth();
 
   useEffect(() => {
@@ -30,22 +42,20 @@ export default function ProductPage() {
       return userData;
     }
 
-    async function categoryProducts() {
+    async function singleProduct() {
       showLoader();
 
       try {
-        let snapshot = await get(getProdutcsRef(productId));
-
-        if (snapshot.exists()) {
-          let data = await snapshot.val();
-          dismissLoader();
+        onValue(getProdutcsRef(productId), (snapshot) => {
+          const data = snapshot.val();
           console.log(data);
+          data.id = productId;
           setProduct(data);
-          console.log(data.productId);
-          const userData = await getUserInfo(data.productId);
-          setUserInfo(userData);
-        } else {
           dismissLoader();
+        });
+        if (product.ptoductId) {
+          const userData = await getUserInfo(product.productId);
+          setUserInfo(userData);
         }
       } catch (error) {
         console.error(error);
@@ -53,12 +63,20 @@ export default function ProductPage() {
       }
       dismissLoader();
     }
-    categoryProducts();
+    singleProduct();
   }, [productId, dismissLoader, showLoader]);
 
   return (
     <>
       <IonPage>
+        <IonHeader translucent>
+          <IonToolbar>
+            <IonButtons>
+              <IonBackButton text="Back" />
+            </IonButtons>
+            <IonTitle>Product</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonContent fullscreen>
           <IonList>
             <SingleProduct

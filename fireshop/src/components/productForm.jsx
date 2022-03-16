@@ -14,8 +14,11 @@ import { Camera, CameraResultType } from "@capacitor/camera";
 import { camera } from "ionicons/icons";
 import { Geolocation } from "@capacitor/geolocation";
 import { getAuth } from "firebase/auth";
+import { Toast } from "@capacitor/toast";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { storage } from "../firebase-config";
 
-export default function ProductForm({ product, handleSubmit }) {
+export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
@@ -23,6 +26,7 @@ export default function ProductForm({ product, handleSubmit }) {
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [user, setUser] = useState({});
+  const [imageFile, setImageFile] = useState({});
 
   const auth = getAuth();
 
@@ -39,10 +43,11 @@ export default function ProductForm({ product, handleSubmit }) {
       setCategory(product.category);
       setImage(product.image);
       setPrice(product.price);
+      setProductId(product.productId);
     }
   }, [auth.currentUser, user, product]);
 
-  function submitEvent(event) {
+  async function submitEvent(event) {
     event.preventDefault();
     if (
       productId !== "" &&
@@ -60,9 +65,16 @@ export default function ProductForm({ product, handleSubmit }) {
         category,
         price,
       };
+      if (imageFile.dataUrl) {
+        const imageUrl = await uploadImage();
+        formData.image = imageUrl;
+      }
       handleSubmit(formData);
     } else {
-      alert("Du mangler noget info");
+      await Toast.show({
+        text: "You are missing some informaiton about your product!",
+        position: "top",
+      });
     }
   }
 
@@ -70,13 +82,20 @@ export default function ProductForm({ product, handleSubmit }) {
     const imageOptions = {
       quality: 80,
       width: 500,
-      allowEditing: true,
       resultType: CameraResultType.DataUrl,
     };
     const image = await Camera.getPhoto(imageOptions);
-    const imageUrl = image.dataUrl;
-    setImage(imageUrl);
+    setImageFile(image);
+    setImage(image.dataUrl);
   }
+
+  async function uploadImage() {
+    const newImageRef = ref(storage, `${product.id}.${imageFile.format}`);
+    await uploadString(newImageRef, imageFile.dataUrl, "data_url");
+    const url = await getDownloadURL(newImageRef);
+    return url;
+  }
+
   return (
     <form onSubmit={submitEvent}>
       {image && (
@@ -137,7 +156,7 @@ export default function ProductForm({ product, handleSubmit }) {
 
       <div className="ion-padding">
         <IonButton type="submit" expand="block">
-          Set for sale
+          {buttonText}
         </IonButton>
       </div>
     </form>

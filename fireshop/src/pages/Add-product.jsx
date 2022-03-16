@@ -44,6 +44,7 @@ export default function AddProduct() {
     Geolocation.requestPermissions();
     const location = await getLocation();
     newPost.city = location;
+
     const url =
       "https://ionic-marketplace-mobile-default-rtdb.firebaseio.com/products.json";
     newPost.dateAdded = new Date().getTime();
@@ -66,7 +67,10 @@ export default function AddProduct() {
             <IonTitle size="large">Set a product for sale</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ProductForm handleSubmit={handleSubmit} />
+        <ProductForm
+          buttonText="Set product for sale"
+          handleSubmit={handleSubmit}
+        />
       </IonContent>
     </IonPage>
   );

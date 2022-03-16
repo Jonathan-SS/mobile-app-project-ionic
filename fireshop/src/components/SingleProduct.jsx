@@ -16,16 +16,18 @@ import {
 } from "@ionic/react";
 import { remove } from "firebase/database";
 import { ellipsisHorizontalOutline } from "ionicons/icons";
-import ProductForm from "./productForm";
 import { Toast } from "@capacitor/toast";
 import { getProdutcsRef } from "../firebase-config";
 import "./styles/SingleProduct.css";
+import ProductUpdateModal from "./Modals/UpdateProductModal";
+import { useHistory } from "react-router";
 
 export default function SingleProduct({ product, userInfo, currentUserId }) {
+  const history = useHistory();
   const [presentActionSheet] = useIonActionSheet();
   const [presentDeleteDialog] = useIonAlert();
   const [presentUpdateModal, dismissUpdateModal] = useIonModal(
-    <ProductForm post={product} dismiss={handleDismissUpdateModal} />
+    <ProductUpdateModal product={product} dismiss={handleDismissUpdateModal} />
   );
 
   function showDeleteDialog() {
@@ -55,6 +57,7 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
   }
 
   async function deletePost() {
+    console.log(product.id);
     await remove(getProdutcsRef(product.id));
 
     await Toast.show({

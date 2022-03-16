@@ -7,6 +7,7 @@ import {
   IonButtons,
   useIonLoading,
   IonBackButton,
+  useIonViewWillEnter,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -22,41 +23,40 @@ export default function CategoryPage() {
   const [showLoader, dismissLoader] = useIonLoading();
   const categoryName = useParams().categoryName;
 
-  useEffect(() => {
-    async function categoryProducts() {
-      showLoader();
+  async function categoryProducts() {
+    showLoader();
 
-      const categoryProducts = query(
-        ref(database, "products"),
-        orderByChild("category"),
-        equalTo(categoryName)
-      );
+    const categoryProducts = query(
+      ref(database, "products"),
+      orderByChild("category"),
+      equalTo(categoryName)
+    );
 
-      try {
-        let snapshot = await get(categoryProducts);
+    try {
+      let snapshot = await get(categoryProducts);
 
-        if (snapshot.exists()) {
-          let data = await snapshot.val();
-          const matchingProducts = Object.keys(data).map((key) => ({
-            id: key,
-            ...data[key],
-          }));
-          dismissLoader();
+      if (snapshot.exists()) {
+        let data = await snapshot.val();
+        const matchingProducts = Object.keys(data).map((key) => ({
+          id: key,
+          ...data[key],
+        }));
+        dismissLoader();
 
-          setCategoryResults(matchingProducts);
-          setResults(true);
-        } else {
-          console.log("no data found");
-          setCategoryResults([]);
-          setResults(false);
-          dismissLoader();
-        }
-      } catch (error) {
-        console.error(error);
+        setCategoryResults(matchingProducts);
+        setResults(true);
+      } else {
+        console.log("no data found");
+        setCategoryResults([]);
+        setResults(false);
+        dismissLoader();
       }
+    } catch (error) {
+      console.error(error);
     }
-    categoryProducts();
-  }, [categoryName, dismissLoader, showLoader]);
+  }
+
+  useIonViewWillEnter(categoryProducts, [showLoader, dismissLoader]);
 
   return (
     <IonPage>
