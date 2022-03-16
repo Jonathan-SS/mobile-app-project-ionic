@@ -1,31 +1,35 @@
-import {
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
-  IonButtons,
-  useIonLoading,
-  IonBackButton,
-  IonCard,
-  IonImg,
-  IonCardHeader,
-  IonCardTitle,
-  IonCardSubtitle,
-  IonList,
-} from "@ionic/react";
+import { IonContent, IonPage, useIonLoading, IonList } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { query, ref, orderByChild, equalTo, get } from "firebase/database";
-import { database, getProdutcsRef } from "../firebase-config";
+import { get } from "firebase/database";
+import { getProdutcsRef, getUserRef } from "../firebase-config";
+import { getAuth } from "firebase/auth";
 
 import "./styles/CategoryPage.css";
+import SingleProduct from "../components/SingleProduct";
+
 export default function ProductPage() {
   const [product, setProduct] = useState({});
+  const [userInfo, setUserInfo] = useState({});
+  const [currentUser, setCurrentUser] = useState();
+
   const [showLoader, dismissLoader] = useIonLoading();
   const productId = useParams().productId;
 
+  const auth = getAuth();
+
   useEffect(() => {
+    if (auth.currentUser.uid) {
+      setCurrentUser(auth.currentUser.uid);
+    }
+    console.log(currentUser);
+    async function getUserInfo(productUserId) {
+      const snapshot = await get(getUserRef(productUserId));
+      const userData = snapshot.val();
+      console.log(userData);
+      return userData;
+    }
+
     async function categoryProducts() {
       showLoader();
 
@@ -37,6 +41,9 @@ export default function ProductPage() {
           dismissLoader();
           console.log(data);
           setProduct(data);
+          console.log(data.productId);
+          const userData = await getUserInfo(data.productId);
+          setUserInfo(userData);
         } else {
           dismissLoader();
         }
@@ -52,21 +59,15 @@ export default function ProductPage() {
   return (
     <>
       <IonPage>
-        <IonList>
-          <IonCard>
-            <IonImg src={product?.image ? product.image : "placeholder"} />
-            <IonCardHeader>
-              <IonCardTitle>
-                {product?.title ? product.title : "Unknown product title"}
-              </IonCardTitle>
-              <IonCardSubtitle>
-                {product?.price
-                  ? product.price + " kr."
-                  : "Unknown price Title"}
-              </IonCardSubtitle>
-            </IonCardHeader>
-          </IonCard>
-        </IonList>
+        <IonContent fullscreen>
+          <IonList>
+            <SingleProduct
+              product={product}
+              userInfo={userInfo}
+              currentUserId={currentUser}
+            />
+          </IonList>
+        </IonContent>
       </IonPage>
     </>
   );
