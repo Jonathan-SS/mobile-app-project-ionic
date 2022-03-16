@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { Camera, CameraResultType } from "@capacitor/camera";
 import { camera } from "ionicons/icons";
 import { Geolocation } from "@capacitor/geolocation";
+import { getAuth } from "firebase/auth";
 
 export default function ProductForm({ product, handleSubmit }) {
   const [title, setTitle] = useState("");
@@ -20,8 +21,17 @@ export default function ProductForm({ product, handleSubmit }) {
   const [image, setImage] = useState("");
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
+  const [productId, setProductId] = useState("");
+  const [user, setUser] = useState({});
+
+  const auth = getAuth();
 
   useEffect(() => {
+    setUser(auth.currentUser);
+    if (user) {
+      setProductId(user.uid);
+    }
+
     Geolocation.requestPermissions();
     if (product) {
       setTitle(product.title);
@@ -30,18 +40,26 @@ export default function ProductForm({ product, handleSubmit }) {
       setImage(product.image);
       setPrice(product.price);
     }
-  }, [product]);
+  }, [auth.currentUser, user, product]);
 
   function submitEvent(event) {
     event.preventDefault();
     if (
+      productId !== "" &&
       image !== "" &&
       description !== "" &&
       title !== "" &&
       category !== "" &&
       price !== ""
     ) {
-      const formData = { title, description, image, category, price };
+      const formData = {
+        productId,
+        title,
+        description,
+        image,
+        category,
+        price,
+      };
       handleSubmit(formData);
     } else {
       alert("Du mangler noget info");
