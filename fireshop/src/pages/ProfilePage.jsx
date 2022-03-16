@@ -40,7 +40,6 @@ export default function ProfilePage() {
   const [firstName, setFirstName] = useState("");
   const [image, setImage] = useState("");
   const auth = getAuth();
-  const [ProductResults, setProductResults] = useState([]);
   const [myProducts, setMyProducts] = useState();
   const [results, setResults] = useState(false);
 
@@ -80,7 +79,6 @@ export default function ProfilePage() {
           setResults(true);
         } else {
           console.log("no data found");
-          setProductResults([]);
           setResults(false);
         }
       } catch (error) {
@@ -130,35 +128,39 @@ export default function ProfilePage() {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
+        <div className="blob-wrapperprofile">
+          <div className="pbContainer">
+            {image && (
+              <img alt="profileImage" className="profileImage" src={image} />
+            )}
+          </div>
+          <div>
+            <IonHeader className="welcomeText">Welcome {firstName}</IonHeader>
+          </div>
 
-        <div className="pbContainer">
-          {image && (
-            <img alt="profileImage" className="profileImage" src={image} />
-          )}
+          <IonListHeader className="products-header">
+            Your Products
+          </IonListHeader>
+          <IonList className="product-list">
+            {results ? (
+              myProducts.map((product) => (
+                <IonRouterLink
+                  routerDirection="forward"
+                  key={product.id}
+                  routerLink={`/product/${product.id}`}
+                >
+                  <ProductListItem
+                    key={product.id}
+                    product={product}
+                    pageEl={pageEl}
+                  />
+                </IonRouterLink>
+              ))
+            ) : (
+              <ProductLoading />
+            )}
+          </IonList>
         </div>
-        <div>
-          <IonHeader className="welcomeText">Welcome {firstName}</IonHeader>
-        </div>
-
-        <IonListHeader className="products-header">Your Products</IonListHeader>
-        <IonList className="product-list"></IonList>
-        {myProducts ? (
-          myProducts.map((product) => (
-            <IonRouterLink
-              routerDirection="forward"
-              key={product.id}
-              routerLink={`/product/${product.id}`}
-            >
-              <ProductListItem
-                key={product.id}
-                product={product}
-                pageEl={pageEl}
-              />
-            </IonRouterLink>
-          ))
-        ) : (
-          <ProductLoading />
-        )}
       </IonContent>
     </IonPage>
   );
