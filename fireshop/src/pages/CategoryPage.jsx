@@ -42,7 +42,7 @@ export default function CategoryPage() {
             ...data[key],
           }));
           dismissLoader();
-          console.log(matchingProducts);
+
           setCategoryResults(matchingProducts);
           setResults(true);
         } else {
@@ -57,7 +57,7 @@ export default function CategoryPage() {
     }
     categoryProducts();
   }, [categoryName, dismissLoader, showLoader]);
-  console.log(categoryName);
+
   return (
     <IonPage>
       <IonHeader collapse="fade" translucent>

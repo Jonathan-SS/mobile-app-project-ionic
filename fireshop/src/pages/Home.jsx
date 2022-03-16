@@ -195,9 +195,13 @@ export default function Home() {
               <IonRouterLink
                 routerDirection="forward"
                 key={product.id}
-                routerLink={`/products/${product.id}`}
+                routerLink={`/product/${product.id}`}
               >
-                <ProductListItem key={product.id} product={product} />
+                <ProductListItem
+                  key={product.id}
+                  product={product}
+                  pageEl={pageEl}
+                />
               </IonRouterLink>
             ))
           ) : (

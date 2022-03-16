@@ -9,15 +9,9 @@ import { ref, deleteObject } from "@firebase/storage";
 import { getAuth } from "firebase/auth";*/
 
 export default function ProductListItem({ product }) {
-  const history = useHistory();
-
-  function goToUserDetailView() {
-    history.push(`product/${product.uid}`);
-  }
-
   return (
     <>
-      <IonCard onClick={goToUserDetailView} className="product-item ">
+      <IonCard onClick={""} className="product-item ">
         <div className="img-gradient">
           <IonImg
             height="200px"
