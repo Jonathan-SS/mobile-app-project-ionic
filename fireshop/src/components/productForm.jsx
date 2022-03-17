@@ -29,7 +29,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [user, setUser] = useState({});
-  const [productPhone, setProductPhone] = useState("");
 
   const auth = getAuth();
 
@@ -38,7 +37,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     if (user) {
       console.log(user);
       setProductId(user.uid);
-      setProductPhone(user.phone);
     }
 
     Geolocation.requestPermissions();
@@ -49,7 +47,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       setImage(product.image);
       setPrice(product.price);
       setProductId(product.productId);
-      setProductPhone(product.phone);
     }
   }, [auth.currentUser, user, product]);
 
@@ -57,7 +54,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     event.preventDefault();
     if (
       productId !== "" &&
-      productPhone !== "" &&
       image !== "" &&
       description !== "" &&
       title !== "" &&
@@ -66,7 +62,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     ) {
       const formData = {
         productId,
-        productPhone,
         title,
         description,
         image,
