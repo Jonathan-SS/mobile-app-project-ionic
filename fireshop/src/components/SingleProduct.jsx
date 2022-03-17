@@ -76,7 +76,7 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
           />
         </IonAvatar>
         <IonLabel>
-          {userInfo?.firstName ? userInfo?.firstName : ""}
+          {userInfo?.firstName ? userInfo?.firstName : ""}{" "}
           {userInfo?.lastName ? userInfo?.lastName : ""}
         </IonLabel>
         <IonButtons>
@@ -108,6 +108,8 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
         </IonCardSubtitle>
         <IonCardSubtitle>Description</IonCardSubtitle>
         {product?.description ? product.description : "Unknown product title"}
+        <IonCardSubtitle>Contact Seller</IonCardSubtitle>
+        {userInfo?.phone ? userInfo?.phone : ""}
       </IonCardContent>
     </IonCard>
   );

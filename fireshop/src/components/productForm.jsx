@@ -15,22 +15,30 @@ import { camera } from "ionicons/icons";
 import { Geolocation } from "@capacitor/geolocation";
 import { getAuth } from "firebase/auth";
 import { Toast } from "@capacitor/toast";
+import { uploadString, ref, getDownloadURL } from "@firebase/storage";
+import { storage } from "../firebase-config";
+
+import "./styles/ProductForm.css";
 
 export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
+  const [imageFile, setImageFile] = useState({});
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [user, setUser] = useState({});
+  const [productPhone, setProductPhone] = useState("");
 
   const auth = getAuth();
 
   useEffect(() => {
     setUser(auth.currentUser);
     if (user) {
+      console.log(user);
       setProductId(user.uid);
+      setProductPhone(user.phone);
     }
 
     Geolocation.requestPermissions();
@@ -41,6 +49,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       setImage(product.image);
       setPrice(product.price);
       setProductId(product.productId);
+      setProductPhone(product.phone);
     }
   }, [auth.currentUser, user, product]);
 
@@ -48,6 +57,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     event.preventDefault();
     if (
       productId !== "" &&
+      productPhone !== "" &&
       image !== "" &&
       description !== "" &&
       title !== "" &&
@@ -56,12 +66,30 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     ) {
       const formData = {
         productId,
+        productPhone,
         title,
         description,
         image,
         category,
         price,
       };
+
+      if (imageFile.dataUrl) {
+        const imageUrl = await uploadImage();
+        formData.image = imageUrl;
+      }
+
+      async function uploadImage() {
+        console.log(formData.category);
+        const newImageRef = ref(
+          storage,
+          `${formData.title}-${user.uid}.${imageFile.format}`
+        );
+        await uploadString(newImageRef, imageFile.dataUrl, "data_url");
+        const url = await getDownloadURL(newImageRef);
+        return url;
+      }
+
       handleSubmit(formData);
     } else {
       await Toast.show({
@@ -70,7 +98,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       });
     }
   }
-
   async function takePicture() {
     const imageOptions = {
       quality: 80,
@@ -80,12 +107,18 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     };
     const image = await Camera.getPhoto(imageOptions);
     const imageUrl = image.dataUrl;
+    setImageFile(image);
     setImage(imageUrl);
   }
+
   return (
     <form onSubmit={submitEvent}>
       {image && (
-        <IonImg className="ion-padding" src={image} onClick={takePicture} />
+        <IonImg
+          className="ion-padding productImageEdit"
+          src={image}
+          onClick={takePicture}
+        />
       )}
       <IonItem>
         <IonLabel position="stacked">Title</IonLabel>

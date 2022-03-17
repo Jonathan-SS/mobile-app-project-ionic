@@ -54,7 +54,7 @@ export default function ProductPage() {
     }
     singleProduct();
     getUserData();
-  }, [productId, dismissLoader, showLoader]);
+  }, [productId, dismissLoader, showLoader, auth.currentUser.uid]);
 
   return (
     <>
