@@ -2,11 +2,9 @@ import {
   IonContent,
   IonHeader,
   IonPage,
-  IonTitle,
   IonToolbar,
   IonButtons,
   IonButton,
-  IonModal,
   IonListHeader,
   IonList,
   IonRouterLink,
@@ -20,9 +18,9 @@ import { database } from "../firebase-config";
 import { getUserRef } from "../firebase-config";
 import { get, query, orderByChild, ref, equalTo } from "firebase/database";
 
-import UpdateProfile from "../components/UpdateProfile";
 import ProductListItem from "../components/ProductListItem";
 import ProductLoading from "../components/ProductLoading";
+import UpdateProfileModal from "../components/Modals/UpdateProfileModal";
 
 export default function ProfilePage() {
   const [showModal, setShowModal] = useState(false);
@@ -86,23 +84,12 @@ export default function ProfilePage() {
   return (
     <IonPage className="posts-page">
       <IonContent fullscreen>
-        <IonModal
-          isOpen={showModal}
-          cssClass="my-custom-class"
-          presentingElement={pageEl}
-          swipeToClose={true}
-          onDidDismiss={() => setShowModal(false)}
-        >
-          <IonHeader translucent>
-            <IonToolbar>
-              <IonTitle>Update Profile</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onclick={() => setShowModal(false)}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <UpdateProfile />
-        </IonModal>
+        <UpdateProfileModal
+          showModal={showModal}
+          pageEl={pageEl}
+          dismiss={() => setShowModal(false)}
+        />
+
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonButtons slot="start">

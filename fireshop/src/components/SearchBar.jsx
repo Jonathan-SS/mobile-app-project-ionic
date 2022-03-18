@@ -2,13 +2,12 @@ import {
   IonSearchbar,
   IonContent,
   IonTitle,
-  useIonLoading,
   IonList,
   IonRouterLink,
 } from "@ionic/react";
 import { useState } from "react";
 import { productsRef } from "../firebase-config.js";
-import { get, onValue } from "firebase/database";
+import { onValue } from "firebase/database";
 import ProductItem from "./ProductItem.jsx";
 import "./styles/SearchBar.css";
 
@@ -46,7 +45,11 @@ export default function Searchbar({ dismiss }) {
         onIonChange={search}
         slot="start"
       ></IonSearchbar>
-      <IonContent className="product-listSearch">
+      <IonContent
+        scrollbar-x="false"
+        scrollbar-y="false"
+        className="product-list-search"
+      >
         <IonList className="search-list">
           {searchResults ? (
             searchResults.map((product) => (

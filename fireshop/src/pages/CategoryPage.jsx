@@ -60,7 +60,11 @@ export default function CategoryPage() {
         </IonToolbar>
       </IonHeader>
       <IonContent className="product-listSearch">
-        <IonList className="category-list">
+        <IonList
+          scrollbar-x="false"
+          scrollbar-y="false"
+          className="category-list"
+        >
           {categoryResults ? (
             categoryResults.map((product) => (
               <IonRouterLink

@@ -39,18 +39,13 @@ export default function ProductPage() {
       }
     }
     async function singleProduct() {
-      showLoader();
-
       onValue(getProdutcsRef(productId), (snapshot) => {
         const data = snapshot.val();
         data.id = productId;
 
         setProduct(data);
         getUserData(data.productId);
-        dismissLoader();
       });
-
-      dismissLoader();
     }
     singleProduct();
     getUserData();

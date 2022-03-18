@@ -6,17 +6,14 @@ import {
   IonToolbar,
   IonIcon,
   IonButton,
-  IonButtons,
   IonList,
   IonListHeader,
-  IonModal,
   useIonViewWillEnter,
   IonLabel,
   IonRouterLink,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
-import Searchbar from "../components/SearchBar";
 import ProductListItem from "../components/ProductListItem";
 import CategoryItem from "../components/ProductCategoryItem";
 import { Geolocation } from "@capacitor/geolocation";
@@ -174,7 +171,11 @@ export default function Home() {
             <IonLabel>Products near you</IonLabel>
           </IonListHeader>
 
-          <IonList className="product-list">
+          <IonList
+            scrollbar-x="false"
+            scrollbar-y="false"
+            className="product-list"
+          >
             {productsCloseToMe ? (
               productsCloseToMe.map((product) => (
                 <IonRouterLink

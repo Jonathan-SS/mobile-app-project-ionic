@@ -3,10 +3,8 @@ import {
   IonButtons,
   IonHeader,
   IonTitle,
-  IonToast,
   IonToolbar,
   IonModal,
-  IonContent,
 } from "@ionic/react";
 
 import Searchbar from "../SearchBar";
@@ -23,7 +21,7 @@ export default function SearchModal({ dismiss, showModal, pageEl }) {
         <IonToolbar>
           <IonTitle>search products</IonTitle>
           <IonButtons slot="end">
-            <IonButton onclick={showModal}>Close</IonButton>
+            <IonButton onclick={dismiss}>Close</IonButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>

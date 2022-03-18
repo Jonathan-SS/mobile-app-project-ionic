@@ -1,3 +1,7 @@
+.inner-scroll.scroll-y.overscroll::-webkit-scrollbar {
+  display: none;
+}
+
 .product-list {
   display: flex;
   flex-wrap: nowrap;
