@@ -63,7 +63,7 @@ export default function ProductPage() {
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <IonList>
+          <IonList scrollbar-x="false" scrollbar-y="false">
             <SingleProduct
               product={product}
               userInfo={userInfo}
