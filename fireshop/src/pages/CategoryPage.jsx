@@ -7,6 +7,8 @@ import {
   IonButtons,
   useIonLoading,
   IonBackButton,
+  IonRouterLink,
+  IonList,
 } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -18,7 +20,6 @@ import ProductItem from "../components/ProductItem";
 
 export default function CategoryPage() {
   const [categoryResults, setCategoryResults] = useState([]);
-
   const [showLoader, dismissLoader] = useIonLoading();
   const categoryName = useParams().categoryName;
 
@@ -59,19 +60,24 @@ export default function CategoryPage() {
         </IonToolbar>
       </IonHeader>
       <IonContent className="product-listSearch">
-        {categoryResults ? (
-          categoryResults.map((product) => (
-            <ProductItem
-              className="productItemSearch"
-              key={product.id}
-              product={product}
-            />
-          ))
-        ) : (
-          <>
-            <IonTitle>No products found.</IonTitle>
-          </>
-        )}
+        <IonList className="category-list">
+          {categoryResults ? (
+            categoryResults.map((product) => (
+              <IonRouterLink
+                routerDirection="forward"
+                key={product.id}
+                routerLink={`/product/${product.id}`}
+                className="productItemSearch"
+              >
+                <ProductItem key={product.id} product={product} />
+              </IonRouterLink>
+            ))
+          ) : (
+            <>
+              <IonTitle>No products found.</IonTitle>
+            </>
+          )}
+        </IonList>
       </IonContent>
     </IonPage>
   );

@@ -32,6 +32,7 @@ import {
   limitToFirst,
   onValue,
 } from "firebase/database";
+import SearchModal from "../components/Modals/SearchModal";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -142,23 +143,12 @@ export default function Home() {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonModal
-          isOpen={showModal}
-          cssClass="my-custom-class"
-          presentingElement={pageEl}
-          swipeToClose={true}
-          onDidDismiss={() => setShowModal(false)}
-        >
-          <IonHeader translucent>
-            <IonToolbar>
-              <IonTitle>search products</IonTitle>
-              <IonButtons slot="end">
-                <IonButton onclick={() => setShowModal(false)}>Close</IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <Searchbar />
-        </IonModal>
+        <SearchModal
+          dismiss={() => setShowModal(false)}
+          showModal={showModal}
+          pageEl={pageEl}
+        />
+
         <IonHeader collapse="fade" translucent>
           <IonToolbar>
             <IonTitle size="large">Home</IonTitle>

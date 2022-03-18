@@ -6,3 +6,12 @@
   width: 100%;
   margin: 20px 10px;
 }
+
+.ion-activatable.product-item-search-link {
+  min-width: 45%;
+  width: 45%;
+  min-height: 150px;
+  display: flex;
+  align-items: flex-end;
+  margin: 0;
+}

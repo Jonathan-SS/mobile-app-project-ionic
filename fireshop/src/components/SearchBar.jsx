@@ -4,48 +4,41 @@ import {
   IonTitle,
   useIonLoading,
   IonList,
+  IonRouterLink,
 } from "@ionic/react";
 import { useState } from "react";
 import { productsRef } from "../firebase-config.js";
-import { get } from "firebase/database";
+import { get, onValue } from "firebase/database";
 import ProductItem from "./ProductItem.jsx";
 import "./styles/SearchBar.css";
 
-export default function Searchbar() {
+export default function Searchbar({ dismiss }) {
   const [searchResults, setSearchResults] = useState([]);
-  const [showLoader, dismissLoader] = useIonLoading();
 
   async function search(e) {
-    showLoader();
+    setSearchResults([]);
     let text = e.target.value.toLowerCase();
 
-    try {
-      let snapshot = await get(productsRef);
+    console.log("Det virker");
 
-      if (snapshot.exists() && text !== "") {
-        let data = await snapshot.val();
-        const matchingProducts = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        let result = matchingProducts.filter((product) =>
-          product.title.toLowerCase().includes(text)
-        );
-        dismissLoader();
-        setSearchResults(result);
-      } else if (snapshot.exists() && text === "") {
-        let data = await snapshot.val();
-        const matchingProducts = Object.keys(data).map((key) => ({
-          id: key,
-          ...data[key],
-        }));
-        dismissLoader();
-        setSearchResults(matchingProducts);
+    onValue(productsRef, (snapshot) => {
+      let productsArr = [];
+      snapshot.forEach((productSnapshot) => {
+        const id = productSnapshot.key;
+        const data = productSnapshot.val();
+        data.id = id;
+        if (data.title.toLowerCase().includes(text)) {
+          productsArr.push(data);
+        }
+      });
+      if (productsArr.length > 0) {
+        setSearchResults(productsArr);
       }
-    } catch (error) {
-      console.error(error);
-    }
+
+      console.log(productsArr);
+    });
   }
+
   return (
     <>
       <IonSearchbar
@@ -57,11 +50,15 @@ export default function Searchbar() {
         <IonList className="search-list">
           {searchResults ? (
             searchResults.map((product) => (
-              <ProductItem
-                className="productItemSearch"
+              <IonRouterLink
+                routerDirection="root"
                 key={product.id}
-                product={product}
-              />
+                onClick={dismiss}
+                routerLink={`/product/${product.id}`}
+                className="product-item-search-link"
+              >
+                <ProductItem key={product.id} product={product} />
+              </IonRouterLink>
             ))
           ) : (
             <>
