@@ -79,20 +79,16 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
           {userInfo?.firstName ? userInfo?.firstName : ""}{" "}
           {userInfo?.lastName ? userInfo?.lastName : ""}
         </IonLabel>
-        <IonButtons>
-          <IonButton onClick={showActionSheet}>
-            <IonIcon icon={ellipsisHorizontalOutline} />
-          </IonButton>
-        </IonButtons>
-        {/* {product.productId === currentUserId ? (
+
+        {product.productId === currentUserId ? (
           <IonButtons>
-            <IonButton onClick={presentActionSheet}>
+            <IonButton onClick={showActionSheet}>
               <IonIcon icon={ellipsisHorizontalOutline} />
             </IonButton>
           </IonButtons>
         ) : (
           <></>
-        )} */}
+        )}
       </IonItem>
       <IonImg src={product?.image ? product.image : "placeholder"} />
 
