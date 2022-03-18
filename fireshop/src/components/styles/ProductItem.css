@@ -3,12 +3,11 @@
   width: 45%;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 24px;
+  margin: 0;
 }
 
 .product-imageSearch {
   display: block;
-  height: 150px;
   object-fit: cover;
   object-position: center;
 }
@@ -20,11 +19,11 @@
 }
 
 .item-contentSearch h2 {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .item-contentSearch h3 {
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .img-gradientSearch {

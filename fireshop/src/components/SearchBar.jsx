@@ -3,6 +3,7 @@ import {
   IonContent,
   IonTitle,
   useIonLoading,
+  IonList,
 } from "@ionic/react";
 import { useState } from "react";
 import { productsRef } from "../firebase-config.js";
@@ -53,19 +54,21 @@ export default function Searchbar() {
         slot="start"
       ></IonSearchbar>
       <IonContent className="product-listSearch">
-        {searchResults ? (
-          searchResults.map((product) => (
-            <ProductItem
-              className="productItemSearch"
-              key={product.id}
-              product={product}
-            />
-          ))
-        ) : (
-          <>
-            <IonTitle>Search for products</IonTitle>
-          </>
-        )}
+        <IonList className="search-list">
+          {searchResults ? (
+            searchResults.map((product) => (
+              <ProductItem
+                className="productItemSearch"
+                key={product.id}
+                product={product}
+              />
+            ))
+          ) : (
+            <>
+              <IonTitle>Search for products</IonTitle>
+            </>
+          )}
+        </IonList>
       </IonContent>
     </>
   );

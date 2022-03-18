@@ -1,7 +1,8 @@
-.product-listSearch {
+.search-list {
   display: flex;
-  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
   flex-wrap: wrap;
   width: 100%;
-  align-items: flex-start;
+  margin: 20px 10px;
 }

@@ -8,7 +8,7 @@
 
 .product-image {
   display: block;
-  height: 200px;
+  height: 175px;
   object-fit: cover;
   object-position: center center;
 }
