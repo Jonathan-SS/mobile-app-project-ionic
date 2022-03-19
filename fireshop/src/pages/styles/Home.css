@@ -19,35 +19,17 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  max-width: 100%;
   width: 100%;
-  padding: 0 20px;
-  justify-content: space-between;
-  padding-bottom: 30px;
-}
-
-.categoryList ion-router-link.ios.ion-activatable {
-  width: 48%;
-  margin-bottom: 5px;
-}
-
-.list-ios {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.blob-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
+  gap: 10px;
   width: 100%;
+  margin: auto;
+  justify-content: space-around;
+  padding-bottom: 50px;
+}
+
+.home-page {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(255, 255, 255, 0.8) 100%
-    ),
-    url("../../assets/blobs/blob.svg");
+  background-image: url("../../assets/blobs/blob.svg") !important;
 }

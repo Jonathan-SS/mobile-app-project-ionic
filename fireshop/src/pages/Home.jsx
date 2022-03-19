@@ -11,6 +11,7 @@ import {
   useIonViewWillEnter,
   IonLabel,
   IonRouterLink,
+  IonNavLink,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
@@ -35,6 +36,7 @@ import { Toast } from "@capacitor/toast";
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [productsCloseToMe, setProductsCloseToMe] = useState();
+  const [city, setCity] = useState();
 
   async function loadProducts(city) {
     try {
@@ -91,6 +93,7 @@ export default function Home() {
     const response = await fetch(url);
     const data = await response.json();
     const city = data.data[0].administrative_area;
+    setCity(city);
     return city;
   }
 
@@ -164,7 +167,7 @@ export default function Home() {
         />
 
         <IonHeader collapse="fade" translucent>
-          <IonToolbar>
+          <IonToolbar mode="ios">
             <IonTitle color="primary" size="large">
               Fireshop
             </IonTitle>
@@ -174,6 +177,7 @@ export default function Home() {
               slot="end"
               box-shadow="false"
               collapse
+              mode="ios"
             >
               <IonIcon
                 color="dark"
@@ -184,48 +188,50 @@ export default function Home() {
             </IonButton>
           </IonToolbar>
         </IonHeader>
-        <div className="wrapper">
-          <div className="blob-wrapper"></div>
-          <IonListHeader>
-            <IonLabel>Products near you</IonLabel>
-          </IonListHeader>
 
-          <IonList className="product-list">
-            {productsCloseToMe ? (
-              productsCloseToMe.map((product) => (
-                <IonRouterLink
-                  routerDirection="forward"
-                  key={product.id}
-                  routerLink={`/product/${product.id}`}
-                >
-                  <ProductListItem
-                    key={product.id}
-                    product={product}
-                    pageEl={pageEl}
-                  />
-                </IonRouterLink>
-              ))
-            ) : (
-              <ProductLoading />
-            )}
-          </IonList>
+        <IonListHeader>
+          <IonLabel>Products near you</IonLabel>
+        </IonListHeader>
 
-          <IonListHeader>
-            <IonLabel>Categories</IonLabel>
-          </IonListHeader>
-
-          <IonList className="categoryList">
-            {categories.map((category) => (
+        <IonList className="product-list">
+          {productsCloseToMe ? (
+            productsCloseToMe.map((product) => (
               <IonRouterLink
                 routerDirection="forward"
-                key={category.key}
-                routerLink={`/category/${category.link}`}
+                key={product.id}
+                routerLink={`/product/${product.id}`}
               >
-                <CategoryItem item={category} />
+                <ProductListItem
+                  key={product.id}
+                  product={product}
+                  pageEl={pageEl}
+                />
               </IonRouterLink>
-            ))}
-          </IonList>
-        </div>
+            ))
+          ) : (
+            <ProductLoading />
+          )}
+        </IonList>
+        {city ? (
+          <IonRouterLink
+            className="ion-padding"
+            routerLink={`/location/${city}`}
+          >
+            Show more
+          </IonRouterLink>
+        ) : (
+          <></>
+        )}
+
+        <IonListHeader>
+          <IonLabel>Categories</IonLabel>
+        </IonListHeader>
+
+        <IonList className="categoryList">
+          {categories.map((category) => (
+            <CategoryItem key={category.key} item={category} />
+          ))}
+        </IonList>
       </IonContent>
     </IonPage>
   );

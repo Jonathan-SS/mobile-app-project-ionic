@@ -1,0 +1,60 @@
+.ion-activatable.productItemSearch-location {
+  min-width: 45%;
+  width: 45%;
+  min-height: 150px;
+  display: flex;
+  align-items: flex-end;
+  margin: 0;
+}
+
+.category-list-location {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 20px 20px;
+}
+
+.product-imageSearch-location {
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+
+.item-contentSearch-location {
+  position: absolute !important;
+  bottom: 0;
+  color: #fff;
+}
+
+.item-contentSearch-location h2 {
+  font-size: 20px;
+}
+
+.item-contentSearch-location h3 {
+  font-size: 16px;
+}
+
+.img-gradientSearch-location {
+  position: relative;
+  display: inline-block;
+}
+
+.img-gradientSearch-location:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 55%,
+    rgba(0, 0, 0, 0.6) 90%
+  );
+}
+.img-gradientSearch-location img {
+  display: block;
+}

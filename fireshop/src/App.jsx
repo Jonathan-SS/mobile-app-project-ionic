@@ -42,6 +42,7 @@ import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
+import ProductsCloseToMePage from "./pages/ProductsCloeToMePage";
 setupIonicReact();
 
 function PrivateRoutes() {
@@ -59,7 +60,10 @@ function PrivateRoutes() {
           <Route exact path="/profile" component={ProfilePage} />
           <Route path="/category/:categoryName" component={CategoryPage} />
           <Route path="/product/:productId" component={ProductPage} />
-
+          <Route
+            path="/location/:locationName"
+            component={ProductsCloseToMePage}
+          />
           <Route exact path="/">
             <Redirect to="/home" />
           </Route>

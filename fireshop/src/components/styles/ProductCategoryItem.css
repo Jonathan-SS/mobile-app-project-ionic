@@ -1,30 +1,20 @@
 .category-item {
-  min-width: 100%;
+  min-width: 45%;
+  width: 45%;
+  height: 75px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+.category-card {
   width: 100%;
   height: 75px;
   display: flex;
-  padding-block: 16px;
-  padding-left: 15px;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
+  flex-direction: row;
   align-items: center;
-  box-shadow: #000;
-  margin: 0 8px 8px 0;
-  cursor: pointer;
-}
-
-.card-native {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  justify-content: space-evenly;
+  text-align: left;
 }
 
 .category-image {
   width: 30%;
-}
-
-.category-content {
-  color: #000;
 }

@@ -92,7 +92,7 @@ export default function ProfilePage() {
           dismiss={() => setShowModal(false)}
         />
 
-        <IonHeader collapse="condense">
+        <IonHeader>
           <IonToolbar>
             <IonButtons slot="start">
               <IonButton onClick={handleSignOut}>Sign Out</IonButton>

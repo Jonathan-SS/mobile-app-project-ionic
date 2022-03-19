@@ -10,42 +10,37 @@ import {
   IonRouterLink,
   IonList,
 } from "@ionic/react";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { query, ref, orderByChild, equalTo, onValue } from "firebase/database";
 import { database } from "../firebase-config";
 
-import "./styles/CategoryPage.css";
+import "./styles/ProductsCloseToMePage.css";
 import ProductItem from "../components/ProductItem";
 
-export default function CategoryPage() {
-  const [categoryResults, setCategoryResults] = useState([]);
-  const [showLoader, dismissLoader] = useIonLoading();
-  const categoryName = useParams().categoryName;
+export default function ProductsCloseToMePage() {
+  const [locationResults, setLocationResults] = useState([]);
+  const locationName = useParams().locationName;
 
   useEffect(() => {
-    console.log("noget");
-    function loadCategory() {
-      const categoryProducts = query(
-        ref(database, "products"),
-        orderByChild("category"),
-        equalTo(categoryName)
-      );
-      onValue(categoryProducts, (snapshot) => {
-        const productsArr = [];
-        snapshot.forEach((productSnapshot) => {
-          const id = productSnapshot.key;
-          const data = productSnapshot.val();
-          data.id = id;
+    const locationProducts = query(
+      ref(database, "products"),
+      orderByChild("city"),
+      equalTo(locationName)
+    );
+    onValue(locationProducts, (snapshot) => {
+      const productsArr = [];
+      snapshot.forEach((productSnapshot) => {
+        const id = productSnapshot.key;
+        const data = productSnapshot.val();
+        data.id = id;
 
-          productsArr.push(data);
-        });
-
-        setCategoryResults(productsArr);
+        productsArr.push(data);
       });
-    }
-    loadCategory();
-  }, [showLoader, dismissLoader, categoryName]);
+
+      setLocationResults(productsArr);
+    });
+  }, []);
 
   return (
     <IonPage>
@@ -55,23 +50,23 @@ export default function CategoryPage() {
             <IonBackButton defaultHref="/" slot="start" />
           </IonButtons>
           <IonTitle size="medium" slot="start">
-            {categoryName}
+            {locationName}
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="product-listSearch">
+      <IonContent className="product-listSearch-location">
         <IonList
           scrollbar-x="false"
           scrollbar-y="false"
           className="category-list"
         >
-          {categoryResults ? (
-            categoryResults.map((product) => (
+          {locationResults ? (
+            locationResults.map((product) => (
               <IonRouterLink
                 routerDirection="forward"
                 key={product.id}
                 routerLink={`/product/${product.id}`}
-                className="productItemSearch"
+                className="productItemSearch-location"
               >
                 <ProductItem key={product.id} product={product} />
               </IonRouterLink>
