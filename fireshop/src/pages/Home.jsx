@@ -30,12 +30,29 @@ import {
   onValue,
 } from "firebase/database";
 import SearchModal from "../components/Modals/SearchModal";
+import { Toast } from "@capacitor/toast";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
   const [productsCloseToMe, setProductsCloseToMe] = useState();
 
   async function loadProducts(city) {
+    try {
+      Geolocation.requestPermissions();
+    } catch (error) {
+      if (error.code === 1) {
+        await Toast.show({
+          text: "This app won't work properly without your geolocation",
+          duration: 3000,
+        });
+
+        Geolocation.requestPermissions();
+      } else {
+        alert("Something went wrong");
+        console.log(error);
+      }
+    }
+
     console.log("Det virker");
 
     const cityProducts = query(
@@ -107,13 +124,13 @@ export default function Home() {
     },
     {
       image: "../../assets/kategori-icons/dyr.svg",
-      category: "Animals",
+      category: "Pets",
       key: 4,
       link: "animals",
     },
     {
       image: "../../assets/kategori-icons/elektronik.svg",
-      category: "Electronics",
+      category: "Tech",
       key: 5,
       link: "electronics",
     },
@@ -148,7 +165,9 @@ export default function Home() {
 
         <IonHeader collapse="fade" translucent>
           <IonToolbar>
-            <IonTitle size="large">Home</IonTitle>
+            <IonTitle color="primary" size="large">
+              Fireshop
+            </IonTitle>
             <IonButton
               onClick={() => setShowModal(true)}
               color="none"
@@ -171,11 +190,7 @@ export default function Home() {
             <IonLabel>Products near you</IonLabel>
           </IonListHeader>
 
-          <IonList
-            scrollbar-x="false"
-            scrollbar-y="false"
-            className="product-list"
-          >
+          <IonList className="product-list">
             {productsCloseToMe ? (
               productsCloseToMe.map((product) => (
                 <IonRouterLink

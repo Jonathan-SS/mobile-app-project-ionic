@@ -90,7 +90,10 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
           <></>
         )}
       </IonItem>
-      <IonImg src={product?.image ? product.image : "placeholder"} />
+      <IonImg
+        className="product-image"
+        src={product?.image ? product.image : "placeholder"}
+      />
 
       <IonCardContent>
         <IonCardTitle>
@@ -100,12 +103,21 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
         <IonCardSubtitle>
           {product?.price
             ? "Price: " + product.price + " kr."
-            : "Unknown price Title"}
+            : "Unknown price "}
         </IonCardSubtitle>
+        <br />
         <IonCardSubtitle>Description</IonCardSubtitle>
-        {product?.description ? product.description : "Unknown product title"}
+        {product?.description
+          ? product.description
+          : "Unknown product description"}
+        <br />
+        <br />
         <IonCardSubtitle>Contact Seller</IonCardSubtitle>
-        {userInfo?.phone ? userInfo?.phone : ""}
+        Telephone:{" "}
+        <a href={`tel:+45${userInfo?.phone ? userInfo?.phone : ""}`}>
+          {userInfo?.phone ? userInfo?.phone : ""}
+        </a>
+        {}
       </IonCardContent>
     </IonCard>
   );

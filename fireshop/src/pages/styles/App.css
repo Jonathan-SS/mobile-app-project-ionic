@@ -1,0 +1,32 @@
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;700&family=Open+Sans&display=swap");
+
+* {
+  font-family: open Sans;
+}
+
+ion-title,
+ion-label,
+ion-card-title,
+ion-list-header {
+  font-family: Archivo !important;
+}
+
+/*Ion tabbar*/
+
+ion-tab-bar {
+  border-radius: 10px;
+  margin: 0px 10px 0 10px;
+  box-shadow: 0px -4px 16px rgb(0 0 0 / 12%);
+  border: none;
+}
+
+ion-fab {
+  margin-bottom: 16px;
+}
+ion-fab-button {
+  box-shadow: none !important;
+}
+
+ion-tab-button#tab-button-AddProducts {
+  shape-outside: circle(90%) !important;
+}

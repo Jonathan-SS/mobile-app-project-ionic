@@ -16,7 +16,14 @@ import { useState, useEffect } from "react";
 import { getAuth, signOut } from "firebase/auth";
 import { database } from "../firebase-config";
 import { getUserRef } from "../firebase-config";
-import { get, query, orderByChild, ref, equalTo } from "firebase/database";
+import {
+  get,
+  query,
+  orderByChild,
+  ref,
+  equalTo,
+  onValue,
+} from "firebase/database";
 
 import ProductListItem from "../components/ProductListItem";
 import ProductLoading from "../components/ProductLoading";
@@ -30,7 +37,6 @@ export default function ProfilePage() {
   const [image, setImage] = useState("");
   const auth = getAuth();
   const [myProducts, setMyProducts] = useState();
-  const [Myresults, setMyResults] = useState(false);
 
   useEffect(() => {
     setUser(auth.currentUser);
@@ -54,25 +60,21 @@ export default function ProfilePage() {
         equalTo(user.uid)
       );
 
-      try {
-        let snapshot = await get(myProducts);
-
-        if (snapshot.exists()) {
-          let dataMyProducts = await snapshot.val();
-          const matchingMyProducts = Object.keys(dataMyProducts).map((key) => ({
-            id: key,
-            ...dataMyProducts[key],
-          }));
-
-          setMyProducts(matchingMyProducts);
-          setMyResults(true);
-        } else {
-          console.log("no data found");
-          setMyResults(false);
+      onValue(myProducts, (snapshot) => {
+        const productsArr = [];
+        snapshot.forEach((productSnapshot) => {
+          const id = productSnapshot.key;
+          const data = productSnapshot.val();
+          data.id = id;
+          console.log("data");
+          productsArr.push(data);
+        });
+        if (productsArr.length > 0) {
+          setMyProducts(productsArr);
         }
-      } catch (error) {
-        console.error(error);
-      }
+
+        console.log(productsArr);
+      });
     }
     myProducts();
   }, [auth.currentUser, user]);
@@ -120,7 +122,7 @@ export default function ProfilePage() {
             Your Products
           </IonListHeader>
           <IonList className="product-list">
-            {Myresults ? (
+            {myProducts ? (
               myProducts.map((product) => (
                 <IonRouterLink
                   routerDirection="forward"

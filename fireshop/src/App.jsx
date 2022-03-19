@@ -1,17 +1,18 @@
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
+  IonFab,
+  IonFabButton,
   IonIcon,
   IonLabel,
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
   IonTabs,
-  IonTab,
   setupIonicReact,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { addCircleOutline, homeOutline, personOutline } from "ionicons/icons";
+import { homeOutline, personOutline, pricetagOutline } from "ionicons/icons";
 import Home from "./pages/Home";
 import AddProduct from "./pages/Add-product";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -45,33 +46,38 @@ setupIonicReact();
 
 function PrivateRoutes() {
   return (
-    <IonTabs>
-      <IonRouterOutlet>
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/add-product" component={AddProduct} />
-        <Route exact path="/profile" component={ProfilePage} />
-        <Route path="/category/:categoryName" component={CategoryPage} />
-        <Route path="/product/:productId" component={ProductPage} />
+    <>
+      <IonFab vertical="bottom" horizontal="center" translucent="true">
+        <IonFabButton routerLink="/add-product">
+          <IonIcon size="large" icon={pricetagOutline}></IonIcon>
+        </IonFabButton>
+      </IonFab>
+      <IonTabs>
+        <IonRouterOutlet>
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/add-product" component={AddProduct} />
+          <Route exact path="/profile" component={ProfilePage} />
+          <Route path="/category/:categoryName" component={CategoryPage} />
+          <Route path="/product/:productId" component={ProductPage} />
 
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-      <IonTabBar slot="bottom">
-        <IonTabButton tab="Home" href="/home">
-          <IonIcon icon={homeOutline} />
-          <IonLabel>Home</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="AddProducts" href="/add-product">
-          <IonIcon icon={addCircleOutline} />
-          <IonLabel>Add product</IonLabel>
-        </IonTabButton>
-        <IonTabButton tab="ProfilePage" href="/profile">
-          <IonIcon icon={personOutline} />
-          <IonLabel>profile</IonLabel>
-        </IonTabButton>
-      </IonTabBar>
-    </IonTabs>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
+        </IonRouterOutlet>
+
+        <IonTabBar slot="bottom">
+          <IonTabButton tab="Home" href="/home">
+            <IonIcon icon={homeOutline} />
+            <IonLabel>Home</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="AddProducts"></IonTabButton>
+          <IonTabButton tab="ProfilePage" href="/profile">
+            <IonIcon icon={personOutline} />
+            <IonLabel>profile</IonLabel>
+          </IonTabButton>
+        </IonTabBar>
+      </IonTabs>
+    </>
   );
 }
 

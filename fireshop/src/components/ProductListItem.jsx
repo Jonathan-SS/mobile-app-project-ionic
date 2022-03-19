@@ -10,15 +10,15 @@ import "./styles/ProductListItem.css";
 export default function ProductListItem({ product }) {
   return (
     <>
-      <IonCard onClick={""} className="product-item ">
+      <IonCard onClick={""} className="product-list-item ">
         <div className="img-gradient">
           <IonImg
             height="200px"
-            className="product-image"
+            className="product-list-image"
             src={product.image}
           />
         </div>
-        <IonCardContent className="item-content">
+        <IonCardContent className="item-list-content">
           <h2>{product.title}</h2>
           <h3>Pris: {product.price}</h3>
         </IonCardContent>

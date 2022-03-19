@@ -12,13 +12,12 @@ import { getAuth } from "firebase/auth";*/
 export default function ProductItem({ product }) {
   return (
     <>
-      <IonCard className="product-itemSearch">
-        <div className="img-gradientSearch">
-          <IonImg className="product-imageSearch" src={product.image} />
-        </div>
-        <IonCardContent className="item-contentSearch">
+      <IonCard className="product-item-search">
+        <IonImg className="product-image-search" src={product.image} />
+
+        <IonCardContent className="item-content-search">
           <h2>{product.title}</h2>
-          <h3>Pris: {product.price}</h3>
+          <h3>Pris: {product.price} kr.</h3>
         </IonCardContent>
       </IonCard>
     </>

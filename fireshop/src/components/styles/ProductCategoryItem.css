@@ -6,7 +6,7 @@
   padding-block: 16px;
   padding-left: 15px;
   flex-wrap: nowrap;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   box-shadow: #000;
   margin: 0 8px 8px 0;

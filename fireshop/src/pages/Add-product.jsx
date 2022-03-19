@@ -1,4 +1,6 @@
 import {
+  IonBackButton,
+  IonButtons,
   IonContent,
   IonHeader,
   IonPage,
@@ -11,6 +13,9 @@ import ProductForm from "../components/productForm";
 import { Geolocation } from "@capacitor/geolocation";
 import { Toast } from "@capacitor/toast";
 import { useHistory } from "react-router";
+import { getProdutcsRef } from "../firebase-config";
+import { set } from "firebase/database";
+
 export default function AddProduct() {
   const [showLoader, dismissLoader] = useIonLoading();
   const history = useHistory();
@@ -44,15 +49,10 @@ export default function AddProduct() {
     Geolocation.requestPermissions();
     const location = await getLocation();
     newPost.city = location;
-
-    const url =
-      "https://ionic-marketplace-mobile-default-rtdb.firebaseio.com/products.json";
     newPost.dateAdded = new Date().getTime();
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify(newPost),
-    });
-    const data = await response.json();
+    const uId = Math.floor(Math.random() * Date.now());
+    const ref = getProdutcsRef(uId);
+    set(ref, newPost);
 
     dismissLoader();
     history.replace("/home");
@@ -62,11 +62,15 @@ export default function AddProduct() {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
+        <IonHeader translucent>
           <IonToolbar>
-            <IonTitle size="large">Set a product for sale</IonTitle>
+            <IonButtons slot="start">
+              <IonBackButton defaultHref="/" text="Back" />
+            </IonButtons>
+            <IonTitle size="medium">Set for sale</IonTitle>
           </IonToolbar>
         </IonHeader>
+
         <ProductForm
           buttonText="Set product for sale"
           handleSubmit={handleSubmit}
