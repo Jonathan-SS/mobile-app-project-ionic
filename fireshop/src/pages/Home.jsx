@@ -50,7 +50,7 @@ export default function Home() {
         const id = productSnapshot.key;
         const data = productSnapshot.val();
         data.id = id;
-
+        console.log("data");
         productsArr.push(data);
       });
       if (productsArr.length > 0) {

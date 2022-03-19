@@ -17,17 +17,8 @@
   width: 50%;
 }
 
-.age-phone {
-  display: flex;
-  justify-content: flex-start;
-}
-
-.age {
-  width: 50%;
-}
-
 .phone {
-  width: 50%;
+  width: 100%;
 }
 
 .postal-city {

@@ -30,7 +30,7 @@ export default function ProfilePage() {
   const [image, setImage] = useState("");
   const auth = getAuth();
   const [myProducts, setMyProducts] = useState();
-  const [results, setResults] = useState(false);
+  const [Myresults, setMyResults] = useState(false);
 
   useEffect(() => {
     setUser(auth.currentUser);
@@ -58,17 +58,17 @@ export default function ProfilePage() {
         let snapshot = await get(myProducts);
 
         if (snapshot.exists()) {
-          let data = await snapshot.val();
-          const matchingProducts = Object.keys(data).map((key) => ({
+          let dataMyProducts = await snapshot.val();
+          const matchingMyProducts = Object.keys(dataMyProducts).map((key) => ({
             id: key,
-            ...data[key],
+            ...dataMyProducts[key],
           }));
 
-          setMyProducts(matchingProducts);
-          setResults(true);
+          setMyProducts(matchingMyProducts);
+          setMyResults(true);
         } else {
           console.log("no data found");
-          setResults(false);
+          setMyResults(false);
         }
       } catch (error) {
         console.error(error);
@@ -120,7 +120,7 @@ export default function ProfilePage() {
             Your Products
           </IonListHeader>
           <IonList className="product-list">
-            {results ? (
+            {Myresults ? (
               myProducts.map((product) => (
                 <IonRouterLink
                   routerDirection="forward"

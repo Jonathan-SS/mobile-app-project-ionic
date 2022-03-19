@@ -135,29 +135,16 @@ export default function UpdateProfile() {
             </IonItem>
           </div>
 
-          <div className="age-phone">
-            <IonItem className="age">
-              <IonLabel position="stacked">Age</IonLabel>
-              <IonInput
-                value={age}
-                type="number"
-                placeholder="Type your age"
-                required
-                onIonChange={(e) => setAge(e.target.value)}
-              />
-            </IonItem>
-
-            <IonItem className="phone">
-              <IonLabel position="stacked">Phone</IonLabel>
-              <IonInput
-                value={phone}
-                type="phone"
-                placeholder="Type your phonenumber"
-                required
-                onIonChange={(e) => setPhone(e.target.value)}
-              />
-            </IonItem>
-          </div>
+          <IonItem className="phone">
+            <IonLabel position="stacked">Phone</IonLabel>
+            <IonInput
+              value={phone}
+              type="phone"
+              placeholder="Type your phonenumber"
+              required
+              onIonChange={(e) => setPhone(e.target.value)}
+            />
+          </IonItem>
 
           <IonItem>
             <IonLabel position="stacked">Adress</IonLabel>
@@ -192,16 +179,6 @@ export default function UpdateProfile() {
               />
             </IonItem>
           </div>
-
-          <IonItem>
-            <IonLabel position="stacked">Email</IonLabel>
-            <IonInput
-              value={user.email}
-              type="email"
-              required
-              onIonChange={(e) => setEmail(e.target.value)}
-            />
-          </IonItem>
 
           <IonItem onClick={takePicture} lines="none">
             <IonLabel>Choose Image</IonLabel>
