@@ -4,6 +4,7 @@
   height: 75px;
   display: flex;
   flex-wrap: nowrap;
+  margin-bottom: 10px;
 }
 .category-card {
   width: 100%;
@@ -13,8 +14,17 @@
   align-items: center;
   justify-content: space-evenly;
   text-align: left;
+  margin-left: 20px;
+  margin-inline: 0;
+  margin-top: 0;
 }
 
 .category-image {
   width: 30%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .category-card {
+    box-shadow: rgb(255 255 255 / 12%) 0px 4px 16px;
+  }
 }

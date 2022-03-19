@@ -1,16 +1,23 @@
 .product-list-item {
-  min-width: 100%;
-  width: 100%;
+  min-width: 180px;
+  width: 180px;
   display: flex;
   align-items: flex-end;
-  margin: 8px 16px 0px 0;
+  margin: 8px 16px 10px 0;
 }
 
 .product-list-image {
   display: block;
-  height: 150px;
+  height: 180px;
+  width: 180px;
   object-fit: cover;
   object-position: center center;
+}
+
+ion-router-link.ion-padding.ios.ion-activatable {
+  margin-left: 20px;
+  margin-top: 15px;
+  padding: 0;
 }
 
 .item-list-content {

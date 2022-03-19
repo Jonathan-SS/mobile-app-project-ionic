@@ -71,6 +71,16 @@ export default function ProfilePage() {
         });
         if (productsArr.length > 0) {
           setMyProducts(productsArr);
+        } else {
+          const emptyProductsArr = [
+            {
+              id: 123456789,
+              image: "../../assets/icon/apple-touch-icon.png",
+              title: "Sell your products below",
+              price: "0",
+            },
+          ];
+          setMyProducts(emptyProductsArr);
         }
 
         console.log(productsArr);
