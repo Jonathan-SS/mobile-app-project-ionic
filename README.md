@@ -59,5 +59,3 @@ From dev to running app:
   - ionic capacitor build android
 
 -For web app buil - Ionic build --prod
-
-- a description of how to run the app in the browser and on a platforms (Android/iOS), including CLI commands
