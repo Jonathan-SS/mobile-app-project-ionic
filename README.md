@@ -31,11 +31,21 @@ Hver componemt og side har dertil også deres egxsen styling fil, så vi altså 
 
 At have en opdelt app, har hjulpet os med at kunne debugge bedre, da vi altid har haft et overblik over hvor fejl er opstået.
 
+Som REST API har vi benyttet api.positionstack.com/ for at kunne få navnet på byen, ud fra de koordinater vi får fra device Geolocation.
+
 Vi har under projektet gjort brug af Firebase som database. I Firebase har vi benyttet os af Auth, RTD (Realtime Database) og Storage.
 
 - Vi har brugt Auth, så det er muligt for brugerne at lave kontoer og logge ind i vores app
 - Vi har brugt RTD til at holde styr på produkter og brugere i vores app
 - Til sidst har vi brugt storage, til at gemme billeder der uploades til appen, her både profilbilleder, men også produkt billeder.
+
+### Native APIs
+
+Vi har brugt følgende native APIs:
+
+- Kamera: Så brugeren kan tage billeder af deres produkt.
+- Geolocation: For at gemme produktets lokation og for at kunne give produkter i nærheden af brugeren, baseret på by.
+- Toast: Til at give brugeren informationer, som ved manglende produkt info.
 
 ## Running our app
 

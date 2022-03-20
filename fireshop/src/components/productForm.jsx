@@ -86,7 +86,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       handleSubmit(formData);
     } else {
       await Toast.show({
-        text: "You are missing some informaiton about your",
+        text: "You are missing some informaiton about your product",
         position: "center",
       });
     }
