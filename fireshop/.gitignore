@@ -8,8 +8,7 @@
 # testing
 /coverage
 
-# production
-/build
+
 
 # misc
 .DS_Store
@@ -27,4 +26,4 @@ yarn-error.log*
 # Optional eslint cache
 .eslintcache
 
-firebase-config.js
+.firebase-config.js
