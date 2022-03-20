@@ -49,7 +49,7 @@ Vi har brugt følgende native APIs:
 
 ## Running our app
 
-From dev to running app:
+From dev to running app, CLI commands:
 
 - For Android development:
   - ionic cap android
