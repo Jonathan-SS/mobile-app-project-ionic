@@ -11,7 +11,6 @@ import {
   useIonViewWillEnter,
   IonLabel,
   IonRouterLink,
-  IonNavLink,
 } from "@ionic/react";
 import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
@@ -31,7 +30,6 @@ import {
   onValue,
 } from "firebase/database";
 import SearchModal from "../components/Modals/SearchModal";
-import { Toast } from "@capacitor/toast";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -39,21 +37,7 @@ export default function Home() {
   const [city, setCity] = useState();
 
   async function loadProducts(city) {
-    try {
-      Geolocation.requestPermissions();
-    } catch (error) {
-      if (error.code === 1) {
-        await Toast.show({
-          text: "This app won't work properly without your geolocation",
-          duration: 3000,
-        });
-
-        Geolocation.requestPermissions();
-      } else {
-        alert("Something went wrong");
-        console.log(error);
-      }
-    }
+    Geolocation.requestPermissions();
 
     console.log("Det virker");
 
@@ -69,14 +53,11 @@ export default function Home() {
         const id = productSnapshot.key;
         const data = productSnapshot.val();
         data.id = id;
-        console.log("data");
         productsArr.push(data);
       });
       if (productsArr.length > 0) {
         setProductsCloseToMe(productsArr);
       }
-
-      console.log(productsArr);
     });
   }
 
@@ -192,29 +173,9 @@ export default function Home() {
         <IonListHeader>
           <IonLabel>Products near you</IonLabel>
         </IonListHeader>
-
-        <IonList className="product-list">
-          {productsCloseToMe ? (
-            productsCloseToMe.map((product) => (
-              <IonRouterLink
-                routerDirection="forward"
-                key={product.id}
-                routerLink={`/product/${product.id}`}
-              >
-                <ProductListItem
-                  key={product.id}
-                  product={product}
-                  pageEl={pageEl}
-                />
-              </IonRouterLink>
-            ))
-          ) : (
-            <ProductLoading />
-          )}
-        </IonList>
         {city ? (
           <IonRouterLink
-            className="ion-padding"
+            className="ion-padding "
             routerLink={`/location/${city}`}
           >
             Show more
@@ -223,11 +184,25 @@ export default function Home() {
           <></>
         )}
 
+        <IonList className="product-list">
+          {productsCloseToMe ? (
+            productsCloseToMe.map((product) => (
+              <ProductListItem
+                key={product.id}
+                product={product}
+                pageEl={pageEl}
+              />
+            ))
+          ) : (
+            <ProductLoading />
+          )}
+        </IonList>
+
         <IonListHeader>
           <IonLabel>Categories</IonLabel>
         </IonListHeader>
 
-        <IonList className="categoryList">
+        <IonList className="category-list">
           {categories.map((category) => (
             <CategoryItem key={category.key} item={category} />
           ))}

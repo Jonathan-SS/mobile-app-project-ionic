@@ -35,7 +35,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
   useEffect(() => {
     setUser(auth.currentUser);
     if (user) {
-      console.log(user);
       setProductId(user.uid);
     }
 
@@ -75,7 +74,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       }
 
       async function uploadImage() {
-        console.log(formData.category);
         const newImageRef = ref(
           storage,
           `${formData.title}-${user.uid}.${imageFile.format}`

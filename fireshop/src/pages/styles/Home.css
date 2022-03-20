@@ -1,21 +1,21 @@
 .product-list {
   display: flex;
   flex-wrap: nowrap;
+  gap: 10px;
   overflow-x: scroll;
   padding-left: 20px;
+  padding-bottom: 20px;
+}
+
+.closest-to-me {
+  padding-top: 0 !important;
 }
 
 .product-list::-webkit-scrollbar {
   display: none;
 }
 
-.product-list ion-router-link.ios.ion-activatable {
-  min-width: 47%;
-  width: 47%;
-  margin-right: 20px;
-}
-
-.categoryList {
+.category-list {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -23,7 +23,7 @@
   gap: 10px;
   width: 100%;
   margin: auto;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-bottom: 50px;
 }
 

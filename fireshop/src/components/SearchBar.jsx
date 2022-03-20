@@ -18,8 +18,6 @@ export default function Searchbar({ dismiss }) {
     setSearchResults([]);
     let text = e.target.value.toLowerCase();
 
-    console.log("Det virker");
-
     onValue(productsRef, (snapshot) => {
       let productsArr = [];
       snapshot.forEach((productSnapshot) => {
@@ -33,8 +31,6 @@ export default function Searchbar({ dismiss }) {
       if (productsArr.length > 0) {
         setSearchResults(productsArr);
       }
-
-      console.log(productsArr);
     });
   }
 
@@ -51,7 +47,7 @@ export default function Searchbar({ dismiss }) {
         className="product-list-search"
       >
         <IonList className="search-list">
-          {searchResults ? (
+          {searchResults.length >= 1 ? (
             searchResults.map((product) => (
               <IonRouterLink
                 routerDirection="root"
@@ -64,9 +60,7 @@ export default function Searchbar({ dismiss }) {
               </IonRouterLink>
             ))
           ) : (
-            <>
-              <IonTitle>Search for products</IonTitle>
-            </>
+            <IonTitle>No products found</IonTitle>
           )}
         </IonList>
       </IonContent>

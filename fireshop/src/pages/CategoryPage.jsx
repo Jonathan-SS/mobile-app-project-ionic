@@ -24,7 +24,6 @@ export default function CategoryPage() {
   const categoryName = useParams().categoryName;
 
   useEffect(() => {
-    console.log("noget");
     function loadCategory() {
       const categoryProducts = query(
         ref(database, "products"),
@@ -50,11 +49,11 @@ export default function CategoryPage() {
   return (
     <IonPage>
       <IonHeader collapse="fade" translucent>
-        <IonToolbar>
+        <IonToolbar mode="ios">
           <IonButtons>
             <IonBackButton defaultHref="/" slot="start" />
           </IonButtons>
-          <IonTitle size="medium" slot="start">
+          <IonTitle slot="start" size="medium">
             {categoryName}
           </IonTitle>
         </IonToolbar>
@@ -65,7 +64,7 @@ export default function CategoryPage() {
           scrollbar-y="false"
           className="category-list"
         >
-          {categoryResults ? (
+          {categoryResults.length >= 1 ? (
             categoryResults.map((product) => (
               <IonRouterLink
                 routerDirection="forward"
@@ -77,9 +76,7 @@ export default function CategoryPage() {
               </IonRouterLink>
             ))
           ) : (
-            <>
-              <IonTitle>No products found.</IonTitle>
-            </>
+            <IonTitle>No products found.</IonTitle>
           )}
         </IonList>
       </IonContent>

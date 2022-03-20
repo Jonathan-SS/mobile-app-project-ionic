@@ -1,6 +1,6 @@
 .product-list-item {
-  min-width: 180px;
-  width: 180px;
+  min-width: 100%;
+  width: 100%;
   display: flex;
   align-items: flex-end;
   margin: 8px 16px 10px 0;
@@ -12,6 +12,11 @@
   width: 180px;
   object-fit: cover;
   object-position: center center;
+}
+.product-list-item-link {
+  min-width: 46%;
+  width: 46%;
+  height: 180px;
 }
 
 ion-router-link.ion-padding.ios.ion-activatable {
@@ -26,11 +31,6 @@ ion-router-link.ion-padding.ios.ion-activatable {
   color: #fff;
   padding: 10px;
   z-index: 5;
-}
-
-.list-img-gradient {
-  position: relative;
-  display: inline-block;
 }
 
 .product-list-item:after {

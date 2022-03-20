@@ -55,7 +55,7 @@ export default function ProductPage() {
     <>
       <IonPage>
         <IonHeader translucent>
-          <IonToolbar>
+          <IonToolbar mode="ios">
             <IonButtons>
               <IonBackButton text="Back" />
             </IonButtons>

@@ -42,7 +42,7 @@ import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
 import CategoryPage from "./pages/CategoryPage";
 import ProductPage from "./pages/ProductPage";
-import ProductsCloseToMePage from "./pages/ProductsCloeToMePage";
+import ProductsCloseToMePage from "./pages/ProductsCloseToMePage";
 setupIonicReact();
 
 function PrivateRoutes() {

@@ -5,7 +5,6 @@ import {
   IonTitle,
   IonToolbar,
   IonButtons,
-  useIonLoading,
   IonBackButton,
   IonRouterLink,
   IonList,
@@ -40,7 +39,7 @@ export default function ProductsCloseToMePage() {
 
       setLocationResults(productsArr);
     });
-  }, []);
+  }, [locationName]);
 
   return (
     <IonPage>
@@ -60,7 +59,7 @@ export default function ProductsCloseToMePage() {
           scrollbar-y="false"
           className="category-list"
         >
-          {locationResults ? (
+          {locationResults.length >= 1 ? (
             locationResults.map((product) => (
               <IonRouterLink
                 routerDirection="forward"
@@ -72,9 +71,7 @@ export default function ProductsCloseToMePage() {
               </IonRouterLink>
             ))
           ) : (
-            <>
-              <IonTitle>No products found.</IonTitle>
-            </>
+            <IonTitle>No products found.</IonTitle>
           )}
         </IonList>
       </IonContent>

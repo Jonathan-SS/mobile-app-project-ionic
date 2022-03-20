@@ -53,7 +53,6 @@ export default function ProfilePage() {
     if (user) getUserDataFromDB();
 
     async function myProducts() {
-      console.log(user.uid);
       const myProducts = query(
         ref(database, "products"),
         orderByChild("productId"),
@@ -66,7 +65,6 @@ export default function ProfilePage() {
           const id = productSnapshot.key;
           const data = productSnapshot.val();
           data.id = id;
-          console.log("data");
           productsArr.push(data);
         });
         if (productsArr.length > 0) {
@@ -82,8 +80,6 @@ export default function ProfilePage() {
           ];
           setMyProducts(emptyProductsArr);
         }
-
-        console.log(productsArr);
       });
     }
     myProducts();

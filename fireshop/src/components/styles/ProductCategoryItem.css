@@ -1,6 +1,6 @@
 .category-item {
-  min-width: 45%;
-  width: 45%;
+  min-width: 46%;
+  width: 46%;
   height: 75px;
   display: flex;
   flex-wrap: nowrap;
@@ -14,13 +14,15 @@
   align-items: center;
   justify-content: space-evenly;
   text-align: left;
-  margin-left: 20px;
-  margin-inline: 0;
-  margin-top: 0;
+  margin: 0;
 }
 
 .category-image {
   width: 30%;
+}
+
+.list-md {
+  background: rgba(0, 0, 0, 0);
 }
 
 @media (prefers-color-scheme: dark) {

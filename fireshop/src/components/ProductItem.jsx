@@ -1,13 +1,6 @@
 import { IonImg, IonCard, IonCardContent } from "@ionic/react";
 
-import "./styles/ProductItem.css"; /*
-import { useHistory } from "react-router-dom";
-import { Toast } from "@capacitor/toast";
-import PostUpdateModal from "./PostUpdateModal";
-import { remove } from "@firebase/database";
-import { getPostRef, storage } from "../firebase-config";
-import { ref, deleteObject } from "@firebase/storage";
-import { getAuth } from "firebase/auth";*/
+import "./styles/ProductItem.css";
 
 export default function ProductItem({ product }) {
   return (
