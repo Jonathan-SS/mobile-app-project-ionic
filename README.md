@@ -56,6 +56,8 @@ From dev to running app:
   - ionic cap copy android
   - ionic cap open android
 - For Android app build
+
   - ionic capacitor build android
 
--For web app buil - Ionic build --prod
+- For web app build:
+  - Ionic build --prod
