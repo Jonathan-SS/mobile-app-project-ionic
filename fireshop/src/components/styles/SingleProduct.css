@@ -1,1 +1,15 @@
+.image-list {
+  display: flex;
+  overflow-x: scroll;
+}
 
+.image-list ::-webkit-scrollbar {
+  display: none;
+}
+
+.image-list .productImageEdit {
+  min-width: 80%;
+  height: auto;
+  object-fit: cover;
+  padding: 8px !important;
+}

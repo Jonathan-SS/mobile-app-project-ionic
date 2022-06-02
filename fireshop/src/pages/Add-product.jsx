@@ -6,18 +6,17 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  useIonLoading,
 } from "@ionic/react";
 import "./styles//Add-products.css";
 import ProductForm from "../components/productForm";
-import { Geolocation } from "@capacitor/geolocation";
 import { Toast } from "@capacitor/toast";
 import { useHistory } from "react-router";
 import { getProdutcsRef } from "../firebase-config";
 import { set } from "firebase/database";
+import { useEffect, useState } from "react";
 
 export default function AddProduct() {
-  const [showLoader, dismissLoader] = useIonLoading();
+  const [city, setCity] = useState("");
   const history = useHistory();
 
   const addedPost = async () => {
@@ -26,37 +25,32 @@ export default function AddProduct() {
     });
   };
 
-  const printCurrentPosition = async () => {
-    const coordinates = await Geolocation.getCurrentPosition();
-    return coordinates.coords;
-  };
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(getLocation);
+    } else {
+      console.error("Geolocation API not supported");
+    }
+  }, []);
 
-  async function getLocation() {
-    const coordsData = await printCurrentPosition();
-    const longitude = String(coordsData.longitude);
-    const latitude = String(coordsData.latitude);
-
-    //const koordinater = latitude + "," + longitude;
-    const url = `http://api.positionstack.com/v1/reverse?access_key=a1a44587e2c53335bf837acc103a4613&query=${latitude},${longitude}`;
+  async function getLocation(pos) {
+    const longitude = String(pos.coords.longitude);
+    const latitude = String(pos.coords.latitude);
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
     const response = await fetch(url);
     const data = await response.json();
-    const city = data.data[0].administrative_area;
-    return city;
+    const city = data.locality.split(" ")[0];
+    setCity(city);
   }
 
   async function handleSubmit(newPost) {
-    showLoader();
-    Geolocation.requestPermissions();
-    const location = await getLocation();
-    newPost.city = location;
+    newPost.city = city;
     newPost.dateAdded = new Date().getTime();
     const uId = Math.floor(Math.random() * Date.now());
     const ref = getProdutcsRef(uId);
-    set(ref, newPost);
-
-    dismissLoader();
-    history.replace("/home");
+    await set(ref, newPost);
     addedPost();
+    history.push("/");
   }
 
   return (

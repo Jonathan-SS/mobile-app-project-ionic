@@ -107,7 +107,7 @@ export default function HTMLIonRouterOutletElement() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log(user);
+       
         // User is authenticated
         setUserIsAuthenticated(true);
         localStorage.setItem("userIsAuthenticated", true);

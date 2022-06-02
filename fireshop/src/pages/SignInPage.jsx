@@ -27,7 +27,6 @@ export default function SignInPage() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log(user);
       })
       .catch((error) => {
         console.log(error);

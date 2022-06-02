@@ -1,5 +1,13 @@
-.productImageEdit {
-  width: 200px;
-  height: 200px;
-  margin: auto;
+.image-list .productImageEdit {
+  min-width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.image-list {
+  display: flex;
+  overflow-x: scroll;
+}
+.image-list::-webkit-scrollbar {
+  display: none;
 }

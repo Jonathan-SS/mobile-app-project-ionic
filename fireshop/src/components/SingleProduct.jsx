@@ -13,6 +13,7 @@ import {
   useIonActionSheet,
   useIonModal,
   useIonAlert,
+  IonList,
 } from "@ionic/react";
 import { remove } from "firebase/database";
 import { ellipsisHorizontalOutline } from "ionicons/icons";
@@ -90,10 +91,16 @@ export default function SingleProduct({ product, userInfo, currentUserId }) {
           <></>
         )}
       </IonItem>
-      <IonImg
-        className="product-image"
-        src={product?.image ? product.image : "placeholder"}
-      />
+      <IonList className="image-list">
+        {product.images &&
+          product.images.map((image) => (
+            <IonImg
+              key={image}
+              className="ion-padding productImageEdit"
+              src={image}
+            />
+          ))}
+      </IonList>
 
       <IonCardContent>
         <IonCardTitle>

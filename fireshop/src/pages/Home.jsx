@@ -16,7 +16,7 @@ import { searchOutline } from "ionicons/icons";
 import "./styles/Home.css";
 import ProductListItem from "../components/ProductListItem";
 import CategoryItem from "../components/ProductCategoryItem";
-import { Geolocation } from "@capacitor/geolocation";
+
 import { useState } from "react";
 import { database } from "../firebase-config";
 import ProductLoading from "../components/ProductLoading";
@@ -37,10 +37,6 @@ export default function Home() {
   const [city, setCity] = useState();
 
   async function loadProducts(city) {
-    Geolocation.requestPermissions();
-
-    console.log("Det virker");
-
     const cityProducts = query(
       ref(database, "products"),
       orderByChild("city"),
@@ -61,26 +57,27 @@ export default function Home() {
     });
   }
 
-  const printCurrentPosition = async () => {
-    const coordinates = await Geolocation.getCurrentPosition();
-    return coordinates.coords;
-  };
+  async function getLocation(pos) {
+    const longitude = String(pos.coords.longitude);
+    const latitude = String(pos.coords.latitude);
 
-  async function getLocation() {
-    const coordsData = await printCurrentPosition();
-    const longitude = String(coordsData.longitude);
-    const latitude = String(coordsData.latitude);
-    const url = `http://api.positionstack.com/v1/reverse?access_key=a1a44587e2c53335bf837acc103a4613&query=${latitude},${longitude}`;
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
     const response = await fetch(url);
     const data = await response.json();
-    const city = data.data[0].administrative_area;
+
+    const city = data.locality.split(" ")[0];
     setCity(city);
+    await loadProducts(city);
     return city;
   }
 
   async function getClosestToMe() {
-    const city = await getLocation();
-    await loadProducts(city);
+    if ("geolocation" in navigator) {
+      console.log("geolocation is available");
+      navigator.geolocation.getCurrentPosition(getLocation);
+    } else {
+      console.error("Geolocation API not supported");
+    }
   }
 
   useIonViewWillEnter(getClosestToMe, [productsCloseToMe, getClosestToMe]);

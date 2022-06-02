@@ -8,6 +8,8 @@ import {
   IonIcon,
   IonSelect,
   IonSelectOption,
+  IonList,
+  useIonLoading,
 } from "@ionic/react";
 import { useState, useEffect } from "react";
 import { Camera, CameraResultType } from "@capacitor/camera";
@@ -15,7 +17,7 @@ import { camera } from "ionicons/icons";
 import { Geolocation } from "@capacitor/geolocation";
 import { getAuth } from "firebase/auth";
 import { Toast } from "@capacitor/toast";
-import { uploadString, ref, getDownloadURL } from "@firebase/storage";
+import { ref, getDownloadURL, uploadBytes } from "@firebase/storage";
 import { storage } from "../firebase-config";
 
 import "./styles/ProductForm.css";
@@ -23,12 +25,13 @@ import "./styles/ProductForm.css";
 export default function ProductForm({ product, handleSubmit, buttonText }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [imageFile, setImageFile] = useState({});
+  const [images, setImages] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [productId, setProductId] = useState("");
   const [user, setUser] = useState({});
+  const [showLoader, dismissLoader] = useIonLoading();
 
   const auth = getAuth();
 
@@ -38,52 +41,63 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       setProductId(user.uid);
     }
 
-    Geolocation.requestPermissions();
     if (product) {
       setTitle(product.title);
       setDescription(product.description);
       setCategory(product.category);
-      setImage(product.image);
+      setImages(product.images);
       setPrice(product.price);
-      setProductId(product.productId);
+      setProductId(product.productIds);
     }
   }, [auth.currentUser, user, product]);
 
   async function submitEvent(event) {
     event.preventDefault();
+
     if (
       productId !== "" &&
-      image !== "" &&
+      images !== "" &&
       description !== "" &&
       title !== "" &&
       category !== "" &&
       price !== ""
     ) {
+      showLoader();
       const formData = {
         productId,
         title,
         description,
-        image,
+        images,
         category,
         price,
       };
 
-      if (imageFile.dataUrl) {
+      if (imageFiles.length > 0) {
         const imageUrl = await uploadImage();
-        formData.image = imageUrl;
+        formData.images = imageUrl;
       }
 
       async function uploadImage() {
-        const newImageRef = ref(
-          storage,
-          `${formData.title}-${user.uid}.${imageFile.format}`
-        );
-        await uploadString(newImageRef, imageFile.dataUrl, "data_url");
-        const url = await getDownloadURL(newImageRef);
-        return url;
+        let productImages = [];
+        for (let i = 0; i < imageFiles.length; i++) {
+          const file = imageFiles[i];
+          const newImageRef = ref(
+            storage,
+            `${formData.title}-${user.uid}-${i}.${file.format}`
+          );
+          const imageBlob = await fetch(file.webPath).then((r) => r.blob());
+          await uploadBytes(newImageRef, imageBlob, {
+            contentType: file.format,
+          });
+          const downloadUrl = await getDownloadURL(newImageRef);
+          productImages.push(downloadUrl);
+        }
+
+        return productImages;
       }
 
       handleSubmit(formData);
+      dismissLoader();
     } else {
       await Toast.show({
         text: "You are missing some informaiton about your product",
@@ -93,26 +107,33 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
   }
   async function takePicture() {
     const imageOptions = {
-      quality: 80,
+      quality: 50,
       width: 500,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl,
+      limit: 5,
     };
-    const image = await Camera.getPhoto(imageOptions);
-    const imageUrl = image.dataUrl;
-    setImageFile(image);
-    setImage(imageUrl);
+    const imagesFiles = await Camera.pickImages(imageOptions);
+    const allImages = [];
+    imagesFiles.photos.forEach((image) => {
+      allImages.push(image.webPath);
+    });
+    //const imageUrl = image.dataUrl;
+    setImageFiles(imagesFiles.photos);
+    setImages(allImages);
   }
 
   return (
     <form onSubmit={submitEvent}>
-      {image && (
-        <IonImg
-          className="ion-padding productImageEdit"
-          src={image}
-          onClick={takePicture}
-        />
-      )}
+      <IonList className="image-list">
+        {images &&
+          images.map((image) => (
+            <IonImg
+              key={image}
+              className="ion-padding productImageEdit"
+              src={image}
+            />
+          ))}
+      </IonList>
+
       <IonItem>
         <IonLabel position="stacked">Title</IonLabel>
         <IonInput
@@ -129,7 +150,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
           onIonChange={(e) => setPrice(e.target.value)}
         />
       </IonItem>
-
       <IonItem>
         <IonLabel position="stacked">Description</IonLabel>
         <IonTextarea
@@ -158,14 +178,12 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
           <IonSelectOption value="clothes">Clothes</IonSelectOption>
         </IonSelect>
       </IonItem>
-
       <IonItem onClick={takePicture} lines="none">
         <IonLabel>Choose Image</IonLabel>
         <IonButton>
           <IonIcon slot="icon-only" icon={camera} />
         </IonButton>
       </IonItem>
-
       <div className="ion-padding">
         <IonButton type="submit" expand="block">
           {buttonText}

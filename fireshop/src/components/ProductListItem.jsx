@@ -14,7 +14,7 @@ export default function ProductListItem({ product }) {
           <IonImg
             height="200px"
             className="product-list-image"
-            src={product.image}
+            src={product.images[0]}
           />
 
           <IonCardContent className="item-list-content">
