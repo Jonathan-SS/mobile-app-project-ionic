@@ -22,17 +22,9 @@ import { useHistory } from "react-router";
 
 export default function UpdateProfile() {
   const [user, setUser] = useState({});
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userInfo, setUserInfo] = useState({});
   const [image, setImage] = useState("");
   const [imageFile, setImageFile] = useState({});
-  const [adress, setAdress] = useState("");
-  const [postal, setPostal] = useState("");
-  const [city, setCity] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [age, setAge] = useState("");
-
   const [showLoader, dismissLoader] = useIonLoading();
   const auth = getAuth();
   const history = useHistory();
@@ -44,15 +36,8 @@ export default function UpdateProfile() {
       const snapshot = await get(getUserRef(user.uid));
       const userData = snapshot.val();
       if (userData) {
-        setFirstName(userData.firstName);
-        setLastName(userData.lastName);
+        setUserInfo(userData);
         setImage(userData.image);
-        setAdress(userData.adress);
-        setPostal(userData.postal);
-        setCity(userData.city);
-        setEmail(userData.email);
-        setPhone(userData.phone);
-        setAge(userData.age);
       }
     }
 
@@ -63,16 +48,7 @@ export default function UpdateProfile() {
     event.preventDefault();
     showLoader();
 
-    const userToUpdate = {
-      firstName: firstName,
-      lastName: lastName,
-      adress: adress,
-      postal: postal,
-      city: city,
-      email: email,
-      phone: phone,
-      age: age,
-    };
+    const userToUpdate = userInfo;
 
     if (imageFile.dataUrl) {
       const imageUrl = await uploadImage();
@@ -115,22 +91,26 @@ export default function UpdateProfile() {
             <IonItem className="firstName">
               <IonLabel position="stacked">Firstname</IonLabel>
               <IonInput
-                value={firstName}
+                value={userInfo.firstName}
                 type="text"
                 placeholder="Type your firstname"
                 required
-                onIonChange={(e) => setFirstName(e.target.value)}
+                onIonChange={(e) =>
+                  setUserInfo({ ...userInfo, firstname: e.target.value })
+                }
               />
             </IonItem>
 
             <IonItem className="lastName">
               <IonLabel position="stacked">Lastname</IonLabel>
               <IonInput
-                value={lastName}
+                value={userInfo.lastName}
                 type="text"
                 placeholder="Type your lastname"
                 required
-                onIonChange={(e) => setLastName(e.target.value)}
+                onIonChange={(e) =>
+                  setUserInfo({ ...userInfo, lastname: e.target.value })
+                }
               />
             </IonItem>
           </div>
@@ -138,44 +118,52 @@ export default function UpdateProfile() {
           <IonItem className="phone">
             <IonLabel position="stacked">Phone</IonLabel>
             <IonInput
-              value={phone}
+              value={userInfo.phone}
               type="phone"
               placeholder="Type your phonenumber"
               required
-              onIonChange={(e) => setPhone(e.target.value)}
+              onIonChange={(e) =>
+                setUserInfo({ ...userInfo, phone: e.target.value })
+              }
             />
           </IonItem>
 
           <IonItem>
             <IonLabel position="stacked">Adress</IonLabel>
             <IonInput
-              value={adress}
+              value={userInfo.adress}
               type="text"
               placeholder="Type your adress"
               required
-              onIonChange={(e) => setAdress(e.target.value)}
+              onIonChange={(e) =>
+                setUserInfo({ ...userInfo, adress: e.target.value })
+              }
             />
           </IonItem>
           <div className="postal-city">
             <IonItem className="postal">
               <IonLabel position="stacked">Postal</IonLabel>
               <IonInput
-                value={postal}
+                value={userInfo.postal}
                 type="number"
                 placeholder="Type your postal"
                 required
-                onIonChange={(e) => setPostal(e.target.value)}
+                onIonChange={(e) =>
+                  setUserInfo({ ...userInfo, postal: e.target.value })
+                }
               />
             </IonItem>
 
             <IonItem className="city">
               <IonLabel position="stacked">City</IonLabel>
               <IonInput
-                value={city}
+                value={userInfo.city}
                 type="text"
                 placeholder="Type your city"
                 required
-                onIonChange={(e) => setCity(e.target.value)}
+                onIonChange={(e) =>
+                  setUserInfo({ ...userInfo, city: e.target.value })
+                }
               />
             </IonItem>
           </div>
