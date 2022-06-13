@@ -12,9 +12,8 @@ import {
   useIonLoading,
 } from "@ionic/react";
 import { useState, useEffect } from "react";
-import { Camera, CameraResultType } from "@capacitor/camera";
+import { Camera } from "@capacitor/camera";
 import { camera } from "ionicons/icons";
-import { Geolocation } from "@capacitor/geolocation";
 import { getAuth } from "firebase/auth";
 import { Toast } from "@capacitor/toast";
 import { ref, getDownloadURL, uploadBytes } from "@firebase/storage";
@@ -56,7 +55,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
 
     if (
       productId !== "" &&
-      images !== "" &&
+      imageFiles !== "" &&
       description !== "" &&
       title !== "" &&
       category !== "" &&
@@ -67,17 +66,11 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
         productId,
         title,
         description,
-        images,
         category,
         price,
       };
 
       if (imageFiles.length > 0) {
-        const imageUrl = await uploadImage();
-        formData.images = imageUrl;
-      }
-
-      async function uploadImage() {
         let productImages = [];
         for (let i = 0; i < imageFiles.length; i++) {
           const file = imageFiles[i];
@@ -92,8 +85,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
           const downloadUrl = await getDownloadURL(newImageRef);
           productImages.push(downloadUrl);
         }
-
-        return productImages;
+        formData.images = productImages;
       }
 
       handleSubmit(formData);
@@ -105,7 +97,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
       });
     }
   }
-  async function takePicture() {
+  async function choosePictures() {
     const imageOptions = {
       quality: 50,
       width: 500,
@@ -116,7 +108,6 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
     imagesFiles.photos.forEach((image) => {
       allImages.push(image.webPath);
     });
-    //const imageUrl = image.dataUrl;
     setImageFiles(imagesFiles.photos);
     setImages(allImages);
   }
@@ -154,7 +145,7 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
         <IonLabel position="stacked">Description</IonLabel>
         <IonTextarea
           value={description}
-          placeholder="Tell us about your image"
+          placeholder="Tell us about your product"
           onIonChange={(e) => setDescription(e.target.value)}
         ></IonTextarea>
       </IonItem>
@@ -178,9 +169,9 @@ export default function ProductForm({ product, handleSubmit, buttonText }) {
           <IonSelectOption value="clothes">Clothes</IonSelectOption>
         </IonSelect>
       </IonItem>
-      <IonItem onClick={takePicture} lines="none">
-        <IonLabel>Choose Image</IonLabel>
-        <IonButton>
+      <IonItem lines="none">
+        <IonLabel>Choose Images</IonLabel>
+        <IonButton onClick={choosePictures}>
           <IonIcon slot="icon-only" icon={camera} />
         </IonButton>
       </IonItem>

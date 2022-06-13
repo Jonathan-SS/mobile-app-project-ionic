@@ -61,14 +61,12 @@ export default function Home() {
     const longitude = String(pos.coords.longitude);
     const latitude = String(pos.coords.latitude);
 
-    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=en`;
+    const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=da`;
     const response = await fetch(url);
     const data = await response.json();
-
     const city = data.locality.split(" ")[0];
     setCity(city);
     await loadProducts(city);
-    return city;
   }
 
   async function getClosestToMe() {
@@ -80,7 +78,7 @@ export default function Home() {
     }
   }
 
-  useIonViewWillEnter(getClosestToMe, [productsCloseToMe, getClosestToMe]);
+  useIonViewWillEnter(getClosestToMe);
 
   const pageEl = document.querySelector(".ion-page");
 
